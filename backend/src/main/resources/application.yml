@@ -1,5 +1,6 @@
 logging:
   level:
+    at.ac.tuwien.sepm.assignment.individual: TRACE # FIXME: change to DEBUG
     root: INFO
   file:
     name: ./log/wendys-friends.log

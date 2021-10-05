@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping(path = "/horses")
+@RequestMapping(path = HorseEndpoint.BASE_PATH)
 public class HorseEndpoint {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    static final String BASE_PATH = "/horses";
     private final HorseService service;
     private final HorseMapper mapper;
 
@@ -22,6 +24,8 @@ public class HorseEndpoint {
 
     @GetMapping
     public Stream<HorseDto> allHorses() {
+        LOGGER.info("GET {}: allHorses()", BASE_PATH);
+
         return service.allHorses().stream()
                 .map(mapper::entityToDto);
     }
