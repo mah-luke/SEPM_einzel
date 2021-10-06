@@ -16,10 +16,12 @@ import java.util.List;
 public class HorseServiceImpl implements HorseService {
     private final HorseDao dao;
     private final Validator<HorseDto> validator;
+    private final Validator<Long> idValidator;
 
-    public HorseServiceImpl(HorseDao dao, Validator<HorseDto> validator) {
+    public HorseServiceImpl(HorseDao dao, Validator<HorseDto> validator, Validator<Long> idValidator) {
         this.dao = dao;
         this.validator = validator;
+        this.idValidator = idValidator;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class HorseServiceImpl implements HorseService {
     public Horse createHorse(HorseDto dto) throws ServiceException {
         dto = validator.validate(dto);
         try {
-            Long id = dao.createHorse(dto);
+            Long id = idValidator.validate(dao.createHorse(dto));
             return dao.getHorse(id);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -46,7 +48,7 @@ public class HorseServiceImpl implements HorseService {
     public Horse editHorse(HorseDto dto) throws ServiceException {
         dto = validator.validate(dto);
         try {
-            Long id = dao.editHorse(dto);
+            Long id = idValidator.validate(dao.editHorse(dto));
             return dao.getHorse(id);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -55,6 +57,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse deleteHorse(Long id) throws ServiceException {
+        id = idValidator.validate(id);
         try {
             Horse horse = dao.getHorse(id);
             if (horse == null) throw new NotFoundException("ID of horse must be already contained in the database");
