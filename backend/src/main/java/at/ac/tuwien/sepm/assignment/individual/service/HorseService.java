@@ -23,4 +23,11 @@ public interface HorseService {
      */
     Horse createHorse(HorseDto dto);
 
-
+    /**
+     * Modifies an existing horse in the system.
+     *
+     * @param dto horse with the new data
+     * @return the modified horse
+     */
+    Horse editHorse(HorseDto dto);
+}

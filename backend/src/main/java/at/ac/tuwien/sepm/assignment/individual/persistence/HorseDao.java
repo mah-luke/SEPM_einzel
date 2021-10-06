@@ -32,3 +32,12 @@ public interface HorseDao {
      * @return the id of the created horse
      */
     Long createHorse(HorseDto dto);
+
+    /**
+     * Edit an already existing horse and store the modifications in the persistent data store.
+     *
+     * @param dto the horse with the new data
+     * @return the id of the edited horse
+     */
+    Long editHorse(HorseDto dto);
+}

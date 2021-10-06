@@ -30,4 +30,11 @@ public class HorseServiceImpl implements HorseService {
         Long id = dao.createHorse(dto);
         return dao.getHorse(id);
     }
+
+    @Override
+    public Horse editHorse(HorseDto dto) {
+        dto = validator.validate(dto);
+        Long id = dao.editHorse(dto);
+        return dao.getHorse(id);
+    }
 }

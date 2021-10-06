@@ -69,6 +69,26 @@ public class HorseJdbcDao implements HorseDao {
         }
     }
 
+    @Override
+    public Long editHorse(HorseDto dto) {
+        try {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update( con -> {
+                PreparedStatement ps = con.prepareStatement(SQL_UPDATE, new String[] {"ID"});
+                ps.setString(1, dto.name());
+                ps.setString(2, dto.description());
+                ps.setDate(3, dto.dob());
+                ps.setString(4, dto.sex().toString());
+                ps.setLong(5, dto.foodId());
+                ps.setLong(6, dto.id());
+                return ps;
+            }, keyHolder);
+            return keyHolder.getKey().longValue();
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Could not modify the given horse in the database", e);
+        }
+    }
+
     private Horse mapRow(ResultSet result, int rownum) throws SQLException {
         Horse horse = new Horse();
         horse.setId(result.getLong("id"));

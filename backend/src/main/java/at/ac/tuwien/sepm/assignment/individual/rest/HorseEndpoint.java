@@ -35,4 +35,10 @@ public class HorseEndpoint {
         LOGGER.info("POST {}: {}", BASE_PATH, horseDto);
         return mapper.entityToDto(service.createHorse(horseDto));
     }
+
+    @PutMapping
+    public HorseDto editHorse(@RequestBody HorseDto horseDto) {
+        LOGGER.info("PUT {}: {}", BASE_PATH, horseDto);
+        return mapper.entityToDto(service.editHorse(horseDto));
+    }
 }
