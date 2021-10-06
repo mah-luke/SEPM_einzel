@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import enums.Sex;
 import org.springframework.dao.DataAccessException;
@@ -52,8 +53,10 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setLong(1, id);
                 return ps;
             }, this::mapRow);
-            if (result.size() > 0) return result.get(0);
-            else throw new NotFoundException("Horse with id '" + id + "' not found in database");
+
+            if (result.size() == 1) return result.get(0);
+            else if (result.size() == 0) throw new NotFoundException("Horse with id '" + id + "' not found in database");
+            else throw new PersistenceException("Getting by id returned multiple values for id " + id);
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not retrieve horse with id '" + id + "' from the database", e);
         }
@@ -72,7 +75,10 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setLong(5, dto.foodId());
                 return ps;
             }, keyHolder);
-            return keyHolder.getKey().longValue();
+
+            Number id = keyHolder.getKey();
+            if (id == null) throw new NotFoundException("Id does not exist in the database!");
+            return id.longValue();
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not create horse in the database", e);
         }
@@ -92,7 +98,10 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setLong(6, dto.id());
                 return ps;
             }, keyHolder);
-            return keyHolder.getKey().longValue();
+
+            Number id = keyHolder.getKey();
+            if (id == null) throw new NotFoundException("Id does not exist in the database!");
+            return id.longValue();
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not modify the given horse in the database", e);
         }
