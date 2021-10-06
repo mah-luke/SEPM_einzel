@@ -2,6 +2,8 @@ package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import enums.Sex;
@@ -32,26 +34,33 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getAll() {
+    public List<Horse> getAll() throws PersistenceException {
         try {
-            return jdbcTemplate.query(SQL_SELECT_ALL, this::mapRow);
+            return jdbcTemplate.query( con -> con.prepareStatement(SQL_SELECT_ALL), this::mapRow);
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not query all horses", e);
         }
     }
 
     @Override
-    public Horse getHorse(Long id) {
+    public Horse getHorse(Long id) throws PersistenceException {
+        if (id < 1) throw new IllegalArgumentException("Ids lower than 1 are not allowed! Value of id: " + id);
+
         try {
-            return jdbcTemplate.query( SQL_SELECT_BY_ID, this::mapRow, id).get(0);
+            List<Horse> result = jdbcTemplate.query( con -> {
+                PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
+                ps.setLong(1, id);
+                return ps;
+            }, this::mapRow);
+            if (result.size() > 0) return result.get(0);
+            else throw new NotFoundException("Horse with id '" + id + "' not found in database");
         } catch (DataAccessException e) {
-            throw new PersistenceException("Could not retrieve horse with id '" + id + "' from the database");
+            throw new PersistenceException("Could not retrieve horse with id '" + id + "' from the database", e);
         }
     }
 
-
     @Override
-    public Long createHorse(HorseDto dto) {
+    public Long createHorse(HorseDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -70,7 +79,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Long editHorse(HorseDto dto) {
+    public Long editHorse(HorseDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -90,7 +99,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public void deleteHorse(Long id) {
+    public void deleteHorse(Long id) throws PersistenceException {
         try {
             jdbcTemplate.update( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_DELETE);
