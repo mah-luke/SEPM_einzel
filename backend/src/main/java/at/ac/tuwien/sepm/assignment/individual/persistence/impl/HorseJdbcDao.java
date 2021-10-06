@@ -23,7 +23,7 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
     private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME + " (NAME, DESCRIPTION, DOB, SEX, FOODID) VALUES ( ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, description = ?, dob = ?, sex = ?, foodid = ? WHERE id = ?";
-//    private static final String SQL_SELECT_ONE = "SELECT * FROM " + TABLE_NAME + " WHERE name = ? AND description = ? AND dob = ? AND sex = ? and foodId = ?";
+    private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -86,6 +86,19 @@ public class HorseJdbcDao implements HorseDao {
             return keyHolder.getKey().longValue();
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not modify the given horse in the database", e);
+        }
+    }
+
+    @Override
+    public void deleteHorse(Long id) {
+        try {
+            jdbcTemplate.update( con -> {
+                PreparedStatement ps = con.prepareStatement(SQL_DELETE);
+                ps.setLong(1, id);
+                return ps;
+            });
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Could not delete the given horse from the database", e);
         }
     }
 

@@ -37,4 +37,16 @@ public class HorseServiceImpl implements HorseService {
         Long id = dao.editHorse(dto);
         return dao.getHorse(id);
     }
+
+    @Override
+    public Horse deleteHorse(Long id) {
+        Horse horse = dao.getHorse(id);
+        if (horse == null) {
+            throw new NotFoundException("ID of horse must be already contained in the database");
+        }
+        dao.deleteHorse(id);
+        return horse;
+    }
+
+
 }

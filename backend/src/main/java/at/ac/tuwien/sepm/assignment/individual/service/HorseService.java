@@ -30,4 +30,12 @@ public interface HorseService {
      * @return the modified horse
      */
     Horse editHorse(HorseDto dto);
+
+    /**
+     * Delete an existing horse in the system.
+     *
+     * @param id the horses id
+     * @return the deleted horse
+     */
+    Horse deleteHorse(Long id);
 }

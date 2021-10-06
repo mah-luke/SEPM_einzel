@@ -41,4 +41,10 @@ public class HorseEndpoint {
         LOGGER.info("PUT {}: {}", BASE_PATH, horseDto);
         return mapper.entityToDto(service.editHorse(horseDto));
     }
+
+    @DeleteMapping("/{id}")
+    public HorseDto deleteHorse(@PathVariable Long id) {
+        LOGGER.info("DELETE {}/{}:", BASE_PATH, id);
+        return mapper.entityToDto(service.deleteHorse(id));
+    }
 }

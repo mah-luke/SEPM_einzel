@@ -40,4 +40,12 @@ public interface HorseDao {
      * @return the id of the edited horse
      */
     Long editHorse(HorseDto dto);
+
+    /**
+     * Delete an already existing horse from the persistent data store.
+     *
+     * @param id the horses id
+     * @return the old id
+     */
+    void deleteHorse(Long id) throws PersistenceException;
 }
