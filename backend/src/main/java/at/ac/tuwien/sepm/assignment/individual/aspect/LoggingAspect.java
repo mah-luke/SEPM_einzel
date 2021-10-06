@@ -19,48 +19,37 @@ public class LoggingAspect {
         final Logger LOGGER = LoggerFactory.getLogger(joinPoint.getTarget().getClass().getName());
         Object retVal;
 
-        try {
 
-            StringBuilder startMessageStringBuilder = new StringBuilder();
+        StringBuilder startMessageStringBuilder = new StringBuilder();
 
-            startMessageStringBuilder.append("Start method ");
-            startMessageStringBuilder.append(joinPoint.getSignature().getName());
-            startMessageStringBuilder.append("(");
+        startMessageStringBuilder.append("Start method ");
+        startMessageStringBuilder.append(joinPoint.getSignature().getName());
+        startMessageStringBuilder.append("(");
 
-            Object[] args = joinPoint.getArgs();
-            for (Object arg : args) {
-                startMessageStringBuilder.append(arg).append(",");
-            }
-            if (args.length > 0) {
-                startMessageStringBuilder.deleteCharAt(startMessageStringBuilder.length() - 1);
-            }
-            startMessageStringBuilder.append(")");
-            LOGGER.trace(startMessageStringBuilder.toString());
-
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
-
-            retVal = joinPoint.proceed();
-
-            stopWatch.stop();
-
-            String endMessage = "Finish method " +
-                    joinPoint.getSignature().getName() +
-                    "(..); execution time: " +
-                    stopWatch.getTotalTimeMillis() +
-                    " ms;";
-
-            LOGGER.trace(endMessage);
-        } catch (Throwable ex) { // ASK: correct way of logging and throwing??
-
-            // Create error message with exception
-            String errorMessage = "Logging of method " +
-                    joinPoint.getSignature().getName() +
-                    " failed. Logging error message.";
-
-            LOGGER.error(errorMessage, ex);
-            throw ex;
+        Object[] args = joinPoint.getArgs();
+        for (Object arg : args) {
+            startMessageStringBuilder.append(arg).append(",");
         }
+        if (args.length > 0) {
+            startMessageStringBuilder.deleteCharAt(startMessageStringBuilder.length() - 1);
+        }
+        startMessageStringBuilder.append(")");
+        LOGGER.trace(startMessageStringBuilder.toString());
+
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        retVal = joinPoint.proceed();
+
+        stopWatch.stop();
+
+        String endMessage = "Finish method " +
+                joinPoint.getSignature().getName() +
+                "(..); execution time: " +
+                stopWatch.getTotalTimeMillis() +
+                " ms;";
+
+        LOGGER.trace(endMessage);
 
         return retVal;
 
