@@ -27,6 +27,7 @@ public class HorseEndpoint {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Stream<HorseDto> allHorses() {
         LOGGER.info("GET {}:", BASE_PATH);
         try {
@@ -38,6 +39,7 @@ public class HorseEndpoint {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public HorseDto createHorse(@RequestBody HorseDto horseDto) {
         LOGGER.info("POST {}: {}", BASE_PATH, horseDto);
         try {
@@ -49,6 +51,7 @@ public class HorseEndpoint {
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.OK)
     public HorseDto editHorse(@RequestBody HorseDto horseDto) {
         LOGGER.info("PUT {}: {}", BASE_PATH, horseDto);
         try {
@@ -60,6 +63,7 @@ public class HorseEndpoint {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public HorseDto deleteHorse(@PathVariable Long id) {
         LOGGER.info("DELETE {}/{}:", BASE_PATH, id);
         try {

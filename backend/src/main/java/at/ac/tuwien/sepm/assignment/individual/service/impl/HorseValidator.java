@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Component;
@@ -25,12 +26,10 @@ public class HorseValidator implements Validator<HorseDto> {
         // dob
         if (dto.dob() == null) throw new IllegalArgumentException("Dob for Horses must be set!");
         else if (dto.dob().after(new Date(System.currentTimeMillis())))
-            throw new IllegalArgumentException("Dob must not be in the future!");
+            throw new ValidationException("Dob must not be in the future!");
 
         // sex
         if (dto.sex() == null) throw new IllegalArgumentException("Sex for Horses must be set!");
-
-
 
         return dto;
     }
