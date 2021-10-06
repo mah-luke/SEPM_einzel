@@ -3,10 +3,11 @@ package at.ac.tuwien.sepm.assignment.individual.rest;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
+import java.lang.invoke.MethodHandles;
 import java.util.stream.Stream;
 
 @RestController
@@ -24,9 +25,14 @@ public class HorseEndpoint {
 
     @GetMapping
     public Stream<HorseDto> allHorses() {
-        LOGGER.info("GET {}: allHorses()", BASE_PATH);
+        LOGGER.info("GET {}:", BASE_PATH);
 
-        return service.allHorses().stream()
-                .map(mapper::entityToDto);
+        return service.allHorses().stream().map(mapper::entityToDto);
+    }
+
+    @PostMapping
+    public HorseDto createHorse(@RequestBody HorseDto horseDto) {
+        LOGGER.info("POST {}: {}", BASE_PATH, horseDto);
+        return mapper.entityToDto(service.createHorse(horseDto));
     }
 }
