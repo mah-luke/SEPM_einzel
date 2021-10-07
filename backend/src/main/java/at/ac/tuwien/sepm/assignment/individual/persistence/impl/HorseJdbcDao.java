@@ -2,10 +2,8 @@ package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import enums.Sex;
 import org.springframework.dao.DataAccessException;
@@ -45,8 +43,6 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse getHorse(Long id) throws PersistenceException {
-        if (id < 1) throw new IllegalArgumentException("Ids lower than 1 are not allowed! Value of id: " + id);
-
         try {
             List<Horse> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
