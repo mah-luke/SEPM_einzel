@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
@@ -37,8 +36,7 @@ public class HorseServiceImpl implements HorseService {
     public Horse createHorse(HorseDto dto) throws ServiceException {
         dto = validator.validate(dto);
         try {
-            Long id = idValidator.validate(dao.createHorse(dto));
-            return dao.getHorse(id);
+            return dao.createHorse(dto);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -47,9 +45,9 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public Horse editHorse(HorseDto dto) throws ServiceException {
         dto = validator.validate(dto);
+        idValidator.validate(dto.id());
         try {
-            Long id = idValidator.validate(dao.editHorse(dto));
-            return dao.getHorse(id);
+            return dao.editHorse(dto);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -59,10 +57,7 @@ public class HorseServiceImpl implements HorseService {
     public Horse deleteHorse(Long id) throws ServiceException {
         id = idValidator.validate(id);
         try {
-            Horse horse = dao.getHorse(id);
-            if (horse == null) throw new NotFoundException("ID of horse must be already contained in the database");
-            dao.deleteHorse(id);
-            return horse;
+            return dao.deleteHorse(id);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

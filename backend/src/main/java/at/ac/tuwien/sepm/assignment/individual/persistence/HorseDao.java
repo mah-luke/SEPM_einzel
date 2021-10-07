@@ -32,7 +32,7 @@ public interface HorseDao {
      * @param dto the horse to create
      * @return the id of the created horse
      */
-    Long createHorse(HorseDto dto) throws PersistenceException;
+    Horse createHorse(HorseDto dto) throws PersistenceException;
 
     /**
      * Edit an already existing horse and store the modifications in the persistent data store.
@@ -40,12 +40,12 @@ public interface HorseDao {
      * @param dto the horse with the new data
      * @return the id of the edited horse
      */
-    Long editHorse(HorseDto dto) throws PersistenceException;
+    Horse editHorse(HorseDto dto) throws PersistenceException;
 
     /**
      * Delete an already existing horse from the persistent data store.
      *
      * @param id the horses id
      */
-    void deleteHorse(Long id) throws PersistenceException;
+    Horse deleteHorse(Long id) throws PersistenceException;
 }

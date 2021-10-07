@@ -59,7 +59,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Long createHorse(HorseDto dto) throws PersistenceException {
+    public Horse createHorse(HorseDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -74,14 +74,14 @@ public class HorseJdbcDao implements HorseDao {
 
             Number id = keyHolder.getKey();
             if (id == null) throw new NotFoundException("Id does not exist in the database!");
-            return id.longValue();
+            return getHorse(id.longValue());
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not create horse in the database", e);
         }
     }
 
     @Override
-    public Long editHorse(HorseDto dto) throws PersistenceException {
+    public Horse editHorse(HorseDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -97,20 +97,22 @@ public class HorseJdbcDao implements HorseDao {
 
             Number id = keyHolder.getKey();
             if (id == null) throw new NotFoundException("Id does not exist in the database!");
-            return id.longValue();
+            return getHorse(id.longValue());
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not modify the given horse in the database", e);
         }
     }
 
     @Override
-    public void deleteHorse(Long id) throws PersistenceException {
+    public Horse deleteHorse(Long id) throws PersistenceException {
+        Horse horse = getHorse(id);
         try {
             jdbcTemplate.update( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_DELETE);
                 ps.setLong(1, id);
                 return ps;
             });
+            return horse;
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not delete the given horse from the database", e);
         }
