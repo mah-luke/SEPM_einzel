@@ -1,9 +1,9 @@
-package at.ac.tuwien.sepm.assignment.individual.service.impl;
+package at.ac.tuwien.sepm.assignment.individual.validation.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
-import at.ac.tuwien.sepm.assignment.individual.service.Validator;
+import at.ac.tuwien.sepm.assignment.individual.validation.Validator;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -14,7 +14,7 @@ public class HorseValidator implements Validator<HorseDto> {
     private final static int MAX_LENGTH = 256;
 
     @Override
-    public HorseDto validate(HorseDto dto) throws ValidationException {
+    public HorseDto validate(HorseDto dto) {
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Horses must be set!");
         else if (dto.name().isBlank()) throw new IllegalArgumentException("Name must not be blank!");

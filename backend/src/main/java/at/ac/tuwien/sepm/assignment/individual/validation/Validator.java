@@ -1,4 +1,4 @@
-package at.ac.tuwien.sepm.assignment.individual.service;
+package at.ac.tuwien.sepm.assignment.individual.validation;
 
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 

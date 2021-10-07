@@ -1,8 +1,8 @@
-package at.ac.tuwien.sepm.assignment.individual.service.impl;
+package at.ac.tuwien.sepm.assignment.individual.validation.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
-import at.ac.tuwien.sepm.assignment.individual.service.Validator;
+import at.ac.tuwien.sepm.assignment.individual.validation.Validator;
 import org.springframework.stereotype.Component;
 
 @Component
