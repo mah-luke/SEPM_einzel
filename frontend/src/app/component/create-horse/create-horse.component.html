@@ -1,0 +1,102 @@
+<div class="container mt-3" *ngIf="error">
+  <div class="alert alert-danger" role="alert">
+    <h4>Error!</h4> {{ error }}
+    <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<div [hidden]="submitted">
+  <h1>Create horse</h1>
+
+  <form (ngSubmit)="onSubmit()" #createHorseForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="model.name" required #name="ngModel"
+             name="name" placeholder="Enter name here">
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name must not be empty</div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" id="description" [(ngModel)]="model.description"
+             name="description" placeholder="Enter description here">
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" class="form-control" id="dob" [(ngModel)]="model.dob" name="dob" required #dob="ngModel">
+      <div [hidden]="dob.valid || dob.pristine" class="alert alert-danger">Date of birth must be selected</div>
+    </div>
+
+    <div class="form-group">
+      <label for="sex">Sex</label>
+      <select class="form-control" id="sex" required name="sex" [(ngModel)]="model.sex" #sex="ngModel">
+        <option hidden disabled selected value> -- select an option -- </option>
+        <option *ngFor='let sex of sexes'>{{sex}}</option>
+      </select>
+      <div [hidden]="sex.valid || sex.pristine" class="alert alert-danger">Sex must be selected</div>
+    </div>
+
+    <div class="form-group">
+      <label for="food">Favourite Food</label>
+      <input type="number" class="form-control" id="food" [(ngModel)]="model.foodId" required
+             name="food" placeholder="Search for food here">
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!createHorseForm.form.valid">Create horse</button>
+  </form>
+</div>
+
+<div *ngIf="submitted">
+  <div *ngIf="!createdHorse">
+    <h2>Horse getting created:</h2>
+    <div class="row">
+      <div class="col-3">Name</div>
+      <div class="col-9">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Description</div>
+      <div class="col-9">{{ model.description }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Date of Birth</div>
+      <div class="col-9">{{ model.dob }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">sex</div>
+      <div class="col-9">{{ model.sex }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Favourite food</div>
+      <div class="col-9">{{ model.foodId }}</div>
+    </div>
+    <br>
+  </div>
+
+  <div *ngIf="createdHorse">
+    <h2>Created Horse:</h2>
+    <div class="row">
+      <div class="col-3">Name</div>
+      <div class="col-9">{{ createdHorse.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Description</div>
+      <div class="col-9">{{ createdHorse.description }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Date of Birth</div>
+      <div class="col-9">{{ createdHorse.dob }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">sex</div>
+      <div class="col-9">{{ createdHorse.sex }}</div>
+    </div>
+    <div class="row">
+      <div class="col-3">Favourite food</div>
+      <div class="col-9">{{ createdHorse.foodId }}</div>
+    </div>
+    <br>
+  </div>
+  <button type="reset" class="btn btn-primary" (click)="newHorse(); createHorseForm.reset()">New horse</button>
+</div>

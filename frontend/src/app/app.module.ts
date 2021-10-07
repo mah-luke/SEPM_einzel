@@ -7,12 +7,14 @@ import {HeaderComponent} from './component/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {HorseComponent} from './component/horse/horse.component';
+import {CreateHorseComponent} from './component/create-horse/create-horse.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HorseComponent,
+    CreateHorseComponent,
   ],
   imports: [
     BrowserModule,

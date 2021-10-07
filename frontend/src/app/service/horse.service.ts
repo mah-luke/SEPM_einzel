@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {Horse} from '../dto/horse';
+import {HorseData} from '../dto/horseData';
 
 const baseUri = environment.backendUrl + '/horses';
 
@@ -22,5 +23,16 @@ export class HorseService {
    */
   getAll(): Observable<Horse[]> {
     return this.http.get<Horse[]>(baseUri);
+  }
+
+
+  /**
+   * Create a new horse in the system
+   *
+   * @param horse the data of the horse to create
+   * @return observable the created horse
+   */
+  createHorse(horse: HorseData): Observable<Horse> {
+    return this.http.post<Horse>(baseUri, horse);
   }
 }
