@@ -33,8 +33,8 @@ export class CreateHorseComponent implements OnInit {
         this.createdHorse = data;
       },
       error: error => {
-        console.error(error);
-        this.showError(error.error);
+        console.error('Cannot create horse: ', error);
+        this.error = error.error;
       }
     });
   }
@@ -53,9 +53,5 @@ export class CreateHorseComponent implements OnInit {
 
   public vanishError(): void {
     this.error = null;
-  }
-
-  private showError(error: Error): void {
-    this.error = error.message;
   }
 }

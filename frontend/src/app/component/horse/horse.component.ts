@@ -10,7 +10,7 @@ import {HorseService} from 'src/app/service/horse.service';
 export class HorseComponent implements OnInit {
   search = false;
   horses: Horse[];
-  error: string = null;
+  error;
 
   constructor(
     private service: HorseService,
@@ -28,16 +28,8 @@ export class HorseComponent implements OnInit {
       },
       error: error => {
         console.error('Error fetching horses', error.message);
-        this.showError('Could not fetch horses: ' + error.message);
+        this.error = error.error;
       }
     });
-  }
-
-  public vanishError(): void {
-    this.error = null;
-  }
-
-  private showError(msg: string) {
-    this.error = msg;
   }
 }

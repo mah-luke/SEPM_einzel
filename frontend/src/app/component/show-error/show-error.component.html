@@ -1,0 +1,10 @@
+<div class="container mt-3">
+  <div class="alert alert-danger" role="alert">
+    <h4>Error: {{error.message}}</h4>
+    <div class="row" *ngFor="let row of error | keyvalue">
+      <div class="col-3" >{{row.key}}</div>
+      <div class="col-9">{{row.value}}</div>
+    </div>
+    <button type="button" (click)="vanishError()" class="btn btn-close" data-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {HorseComponent} from './component/horse/horse.component';
 import {CreateHorseComponent} from './component/create-horse/create-horse.component';
+import { ShowErrorComponent } from './component/show-error/show-error.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {CreateHorseComponent} from './component/create-horse/create-horse.compon
     HeaderComponent,
     HorseComponent,
     CreateHorseComponent,
+    ShowErrorComponent,
   ],
   imports: [
     BrowserModule,
