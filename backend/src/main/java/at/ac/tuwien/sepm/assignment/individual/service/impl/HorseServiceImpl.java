@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
-import at.ac.tuwien.sepm.assignment.individual.validation.Validator;
+import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
