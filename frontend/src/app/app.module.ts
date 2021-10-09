@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HorseComponent} from './component/horse/horse.component';
 import {CreateHorseComponent} from './component/create-horse/create-horse.component';
 import { ShowErrorComponent } from './component/show-error/show-error.component';
+import { EditHorseComponent } from './component/edit-horse/edit-horse.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ShowErrorComponent } from './component/show-error/show-error.component'
     HorseComponent,
     CreateHorseComponent,
     ShowErrorComponent,
+    EditHorseComponent,
   ],
   imports: [
     BrowserModule,

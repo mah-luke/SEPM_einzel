@@ -35,4 +35,24 @@ export class HorseService {
   createHorse(horse: HorseData): Observable<Horse> {
     return this.http.post<Horse>(baseUri, horse);
   }
+
+  /**
+   * Edit an already existing horse in the system.
+   *
+   * @param id the id of the horse to edit.
+   * @param horse the updated values for the horse.
+   */
+  editHorse(id: string, horse: HorseData): Observable<Horse> {
+    console.log('get with id: ' + id);
+    return this.http.put<Horse>(baseUri + '/' + id, horse);
+  }
+
+  /**
+   * Get a horse stored in the system.
+   *
+   * @param id the id of the stored horse.
+   */
+  getHorse(id: string) {
+    return this.http.get<Horse>(baseUri + '/' + id);
+  }
 }

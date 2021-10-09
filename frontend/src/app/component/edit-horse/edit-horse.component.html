@@ -1,0 +1,54 @@
+<app-show-error *ngIf="error" [(error)]="error"></app-show-error>
+
+<div [hidden]="submitted">
+  <h1>Edit horse</h1>
+
+  <form (ngSubmit)="onSubmit()" #editHorseForm="ngForm" *ngIf="model">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="model.name" required #name="ngModel"
+             name="name" placeholder="Enter name here">
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name must not be empty</div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" class="form-control" id="description" [(ngModel)]="model.description"
+             name="description" placeholder="Enter description here">
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" class="form-control" id="dob" [(ngModel)]="model.dob" name="dob" required #dob="ngModel">
+      <div [hidden]="dob.valid || dob.pristine" class="alert alert-danger">Date of birth must be selected</div>
+    </div>
+
+    <div class="form-group">
+      <label for="sex">Sex</label>
+      <select class="form-control" id="sex" required name="sex" [(ngModel)]="model.sex" #sex="ngModel">
+        <option hidden disabled selected value> -- select an option -- </option>
+        <option *ngFor='let sex of sexes'>{{sex}}</option>
+      </select>
+      <div [hidden]="sex.valid || sex.pristine" class="alert alert-danger">Sex must be selected</div>
+    </div>
+
+    <div class="form-group">
+      <label for="food">Favourite Food</label>
+      <input type="number" class="form-control" id="food" [(ngModel)]="model.foodId" required
+             name="food" placeholder="Search for food here">
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!editHorseForm.form.valid">Confirm edit</button>
+  </form>
+</div>
+
+<div *ngIf="submitted">
+  <div *ngIf="!editedHorse">
+   not edited
+  </div>
+
+  <div *ngIf="editedHorse">
+    edited
+  </div>
+  <button type="reset" class="btn btn-primary" (click)="reEditHorse(); ">Back to edit</button>
+</div>
+
