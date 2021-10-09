@@ -1,10 +1,8 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
-import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ public interface HorseService {
      * @param dto the horse to create
      * @return the created horse
      */
-    Horse createHorse(HorseDto dto) throws ServiceException;
+    Horse createHorse(HorseDataDto dto) throws ServiceException;
 
     /**
      * Modifies an existing horse in the system.
@@ -33,7 +31,7 @@ public interface HorseService {
      * @param dto horse with the new data
      * @return the modified horse
      */
-    Horse editHorse(HorseDto dto) throws ServiceException;
+    Horse editHorse(long id, HorseDataDto dto) throws ServiceException;
 
     /**
      * Delete an existing horse in the system.

@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
@@ -59,7 +59,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse createHorse(HorseDto dto) throws PersistenceException {
+    public Horse createHorse(HorseDataDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -81,7 +81,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse editHorse(HorseDto dto) throws PersistenceException {
+    public Horse editHorse(long id, HorseDataDto dto) throws PersistenceException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -91,13 +91,13 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setDate(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
                 ps.setLong(5, dto.foodId());
-                ps.setLong(6, dto.id());
+                ps.setLong(6, id);
                 return ps;
             }, keyHolder);
 
-            Number id = keyHolder.getKey();
-            if (id == null) throw new NotFoundException("Id does not exist in the database!");
-            return getHorse(id.longValue());
+            Number ret_id = keyHolder.getKey();
+            if (ret_id == null) throw new NotFoundException("Id does not exist in the database!");
+            return getHorse(ret_id.longValue());
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not modify the given horse in the database", e);
         }

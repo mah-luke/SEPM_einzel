@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
@@ -52,22 +53,22 @@ public class HorseEndpoint {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HorseDto createHorse(@RequestBody HorseDto horseDto) {
-        LOGGER.info("POST {}: {}", BASE_PATH, horseDto);
+    public HorseDto createHorse(@RequestBody HorseDataDto dto) {
+        LOGGER.info("POST {}: {}", BASE_PATH, dto);
         try {
-            return mapper.entityToDto(service.createHorse(horseDto));
+            return mapper.entityToDto(service.createHorse(dto));
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public HorseDto editHorse(@RequestBody HorseDto horseDto) {
-        LOGGER.info("PUT {}: {}", BASE_PATH, horseDto);
+    public HorseDto editHorse(@PathVariable Long id, @RequestBody HorseDataDto dto) {
+        LOGGER.info("PUT {}/{}: {}", BASE_PATH, id, dto);
         try {
-            return mapper.entityToDto(service.editHorse(horseDto));
+            return mapper.entityToDto(service.editHorse(id, dto));
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);

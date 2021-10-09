@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 
@@ -32,7 +32,7 @@ public interface HorseDao {
      * @param dto the horse to create
      * @return the id of the created horse
      */
-    Horse createHorse(HorseDto dto) throws PersistenceException;
+    Horse createHorse(HorseDataDto dto) throws PersistenceException;
 
     /**
      * Edit an already existing horse and store the modifications in the persistent data store.
@@ -40,7 +40,7 @@ public interface HorseDao {
      * @param dto the horse with the new data
      * @return the id of the edited horse
      */
-    Horse editHorse(HorseDto dto) throws PersistenceException;
+    Horse editHorse(long id, HorseDataDto dto) throws PersistenceException;
 
     /**
      * Delete an already existing horse from the persistent data store.
