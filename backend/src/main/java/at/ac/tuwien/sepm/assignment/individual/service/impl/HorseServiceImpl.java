@@ -62,4 +62,14 @@ public class HorseServiceImpl implements HorseService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Horse getHorse(long id) throws ServiceException {
+        id = idValidator.validate(id);
+        try {
+            return dao.getHorse(id);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

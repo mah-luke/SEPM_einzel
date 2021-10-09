@@ -38,6 +38,18 @@ public class HorseEndpoint {
         }
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public HorseDto getHorse(@PathVariable long id) {
+        LOGGER.info("GET {}/{}:", BASE_PATH, id);
+        try {
+            return mapper.entityToDto(service.getHorse(id));
+        } catch (ServiceException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public HorseDto createHorse(@RequestBody HorseDto horseDto) {
