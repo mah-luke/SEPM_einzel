@@ -54,7 +54,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public Horse deleteHorse(Long id) throws ServiceException {
+    public Horse deleteHorse(long id) throws ServiceException {
         id = idValidator.validate(id);
         try {
             return dao.deleteHorse(id);

@@ -24,7 +24,7 @@ public interface HorseDao {
      * @param id a valid id of a stored horse
      * @return the stored horse corresponding to the id
      */
-    Horse getHorse(Long id) throws PersistenceException;
+    Horse getHorse(long id) throws PersistenceException;
 
     /**
      * Create a new horse and store it in the persistent data store.
@@ -47,5 +47,5 @@ public interface HorseDao {
      *
      * @param id the horses id
      */
-    Horse deleteHorse(Long id) throws PersistenceException;
+    Horse deleteHorse(long id) throws PersistenceException;
 }

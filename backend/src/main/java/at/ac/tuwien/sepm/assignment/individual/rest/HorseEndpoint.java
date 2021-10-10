@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @RequestMapping(path = HorseEndpoint.BASE_PATH)
 public class HorseEndpoint {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    static final String BASE_PATH = "/horses";
+    public static final String BASE_PATH = "/horses";
     private final HorseService service;
     private final HorseMapper mapper;
 
@@ -65,7 +65,7 @@ public class HorseEndpoint {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public HorseDto editHorse(@PathVariable Long id, @RequestBody HorseDataDto dto) {
+    public HorseDto editHorse(@PathVariable long id, @RequestBody HorseDataDto dto) {
         LOGGER.info("PUT {}/{}: {}", BASE_PATH, id, dto);
         try {
             return mapper.entityToDto(service.editHorse(id, dto));
@@ -77,7 +77,7 @@ public class HorseEndpoint {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public HorseDto deleteHorse(@PathVariable Long id) {
+    public HorseDto deleteHorse(@PathVariable long id) {
         LOGGER.info("DELETE {}/{}:", BASE_PATH, id);
         try {
             return mapper.entityToDto(service.deleteHorse(id));

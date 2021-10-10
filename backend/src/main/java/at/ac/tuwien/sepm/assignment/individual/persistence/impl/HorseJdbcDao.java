@@ -42,7 +42,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse getHorse(Long id) throws PersistenceException {
+    public Horse getHorse(long id) throws PersistenceException {
         try {
             List<Horse> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
@@ -73,7 +73,7 @@ public class HorseJdbcDao implements HorseDao {
             }, keyHolder);
 
             Number id = keyHolder.getKey();
-            if (id == null) throw new NotFoundException("Id does not exist in the database!");
+            if (id == null) throw new NotFoundException("Id '" + id + "' for horse does not exist in the database!");
             return getHorse(id.longValue());
         } catch (DataAccessException e) {
             throw new PersistenceException("Could not create horse in the database", e);
@@ -104,7 +104,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse deleteHorse(Long id) throws PersistenceException {
+    public Horse deleteHorse(long id) throws PersistenceException {
         Horse horse = getHorse(id);
         try {
             jdbcTemplate.update( con -> {

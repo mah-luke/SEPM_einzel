@@ -39,7 +39,7 @@ public interface HorseService {
      * @param id the horses id
      * @return the deleted horse
      */
-    Horse deleteHorse(Long id) throws ServiceException;
+    Horse deleteHorse(long id) throws ServiceException;
 
     /**
      * Retrieve an existing in the system.
