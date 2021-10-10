@@ -6,12 +6,20 @@
 
 <div class="mt-3">
   <table class="table table-hover">
-    <thead>
+    <tr>
       <th>Name</th>
-    </thead>
+      <th>Description</th>
+      <th>Date of birth</th>
+      <th>Sex</th>
+      <th>Favourite food</th>
+    </tr>
     <tbody>
-      <tr *ngFor="let horse of horses">
+      <tr *ngFor="let horse of horses" routerLink="/horses/{{horse.id}}/details">
         <td>{{horse.name}}</td>
+        <td>{{horse.description}}</td>
+        <td>{{horse.dob}}</td>
+        <td>{{horse.sex}}</td>
+        <td>{{horse.foodId}}</td>
       </tr>
     </tbody>
   </table>

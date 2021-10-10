@@ -1,0 +1,16 @@
+<app-show-error *ngIf="error" [(error)]="error"></app-show-error>
+
+<div *ngIf="model">
+  <h1>Details of horse: {{model.name}}</h1>
+  <app-show-horse [model]="model"></app-show-horse>
+
+  <button class="btn btn-info" routerLink="/horses/{{model.id}}/edit">Edit Horse</button>
+  <button class="btn btn-danger" (click)="deleteHorse()">Delete Horse</button>
+
+</div>
+
+<div *ngIf="deletedHorse">
+  <h1>Horse got deleted successfully. Information of deleted horse:</h1>
+  <app-show-horse [model]="deletedHorse"></app-show-horse>
+  <button class="btn btn-info" routerLink="/horses">Back to Search</button>
+</div>

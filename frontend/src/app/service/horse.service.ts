@@ -55,4 +55,13 @@ export class HorseService {
   getHorse(id: string) {
     return this.http.get<Horse>(baseUri + '/' + id);
   }
+
+  /**
+   * Delete a horse from the system.
+   *
+   * @param id the id of the horse to delete.
+   */
+  deleteHorse(id: string) {
+    return this.http.delete<Horse>(baseUri + '/' + id);
+  }
 }
