@@ -27,8 +27,9 @@ export class EditHorseComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(model: Horse) {
     console.log('submitted horse editing form');
+    this.model = model;
     this.submitted = true;
     this.editHorse();
   }

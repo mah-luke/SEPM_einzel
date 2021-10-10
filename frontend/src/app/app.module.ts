@@ -12,6 +12,7 @@ import { ShowErrorComponent } from './component/show-error/show-error.component'
 import { EditHorseComponent } from './component/edit-horse/edit-horse.component';
 import { ShowHorseComponent } from './component/show-horse/show-horse.component';
 import { HorseDetailsComponent } from './component/horse-details/horse-details.component';
+import { HorseFormComponent } from './component/horse-form/horse-form.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { HorseDetailsComponent } from './component/horse-details/horse-details.c
     EditHorseComponent,
     ShowHorseComponent,
     HorseDetailsComponent,
+    HorseFormComponent,
   ],
   imports: [
     BrowserModule,
