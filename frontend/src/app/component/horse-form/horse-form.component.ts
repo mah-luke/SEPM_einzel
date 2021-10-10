@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Sex} from '../../enums/sex';
 import {HorseData} from '../../dto/horseData';
-import {Horse} from '../../dto/horse';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -12,8 +11,8 @@ import {NgForm} from '@angular/forms';
 export class HorseFormComponent implements OnInit {
   @ViewChild('horseForm') public sub: NgForm;
 
-  @Input() model: Horse | HorseData;
-  @Output() emitter = new EventEmitter<Horse | HorseData>();
+  @Input() model: HorseData;
+  @Output() emitter = new EventEmitter<HorseData>();
   sexes: Sex[] = Object.values(Sex);
 
   constructor() { }

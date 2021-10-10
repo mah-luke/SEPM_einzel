@@ -3,6 +3,7 @@ import {Sex} from '../../enums/sex';
 import {Horse} from '../../dto/horse';
 import {HorseService} from '../../service/horse.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
+import {HorseData} from '../../dto/horseData';
 
 @Component({
   selector: 'app-edit-horse',
@@ -15,7 +16,7 @@ export class EditHorseComponent implements OnInit {
   editedHorse: Horse;
   submitted = false;
   error = null;
-  model: Horse;
+  model: HorseData;
 
   constructor(private service: HorseService, private route: ActivatedRoute) {
   }
@@ -27,7 +28,7 @@ export class EditHorseComponent implements OnInit {
     });
   }
 
-  onSubmit(model: Horse) {
+  onSubmit(model: HorseData) {
     console.log('submitted horse editing form');
     this.model = model;
     this.submitted = true;
@@ -51,7 +52,13 @@ export class EditHorseComponent implements OnInit {
     this.service.getHorse(this.id).subscribe( {
       next: data => {
         console.log('horse retrieved', data);
-        this.model = data;
+        this.model = new HorseData(
+          data.name,
+          data.dob,
+          data.sex,
+          data.food.id,
+          data.description
+        );
       },
       error: error => {
         console.error('Cannot edit horse: ', error);

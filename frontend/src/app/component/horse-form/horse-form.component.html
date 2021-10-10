@@ -33,5 +33,5 @@
            name="food" placeholder="Search for food here">
   </div>
 
-  <button type="submit" class="btn btn-success"  [disabled]="(!horseForm.form.valid || horseForm.form.pristine)">Submit Horse</button>
+  <button type="submit" class="btn btn-success"  [disabled]="(horseForm.form.invalid || horseForm.form.pristine)">Submit Horse</button>
 </form>

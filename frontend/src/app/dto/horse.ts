@@ -1,4 +1,5 @@
 import {Sex} from '../enums/sex';
+import {Food} from './food';
 
 export interface Horse {
   id: number;
@@ -6,5 +7,5 @@ export interface Horse {
   description?: string;
   dob: Date;
   sex: Sex;
-  foodId: number;
+  food: Food;
 }

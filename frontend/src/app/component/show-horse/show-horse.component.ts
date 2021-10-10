@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Horse} from '../../dto/horse';
-import {HorseData} from "../../dto/horseData";
+import {HorseData} from '../../dto/horseData';
 
 @Component({
   selector: 'app-show-horse',

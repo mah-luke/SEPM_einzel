@@ -5,7 +5,9 @@
       <tr><td>Description</td><td>{{model.description}}</td></tr>
       <tr><td>Date of Birth</td><td>{{model.dob}}</td></tr>
       <tr><td>Sex</td><td>{{model.sex}}</td></tr>
-      <tr><td>Favourite Food</td><td>{{model.foodId}}</td></tr>
+      <tr *ngIf="model.food"><td>Favourite Food</td>
+        <td *ngIf="model.food">{{model.food.name}}, {{model.food.calories}} kcal</td>
+        <td *ngIf="model.foodId">{{model.foodId}}</td></tr>
     </tbody>
   </table>
   <br>
