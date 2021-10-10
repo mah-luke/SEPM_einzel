@@ -43,53 +43,14 @@
 
 <div *ngIf="submitted">
   <div *ngIf="!createdHorse">
-    <h2>Horse getting created:</h2>
-    <div class="row">
-      <div class="col-3">Name</div>
-      <div class="col-9">{{ model.name }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Description</div>
-      <div class="col-9">{{ model.description }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Date of Birth</div>
-      <div class="col-9">{{ model.dob }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">sex</div>
-      <div class="col-9">{{ model.sex }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Favourite food</div>
-      <div class="col-9">{{ model.foodId }}</div>
-    </div>
-    <br>
+    <h2 *ngIf="!error">Waiting while new Horse gets created...:</h2>
+    <h2 *ngIf="error">Horse that was failed to create:</h2>
+    <app-show-horse [model]="model"></app-show-horse>
   </div>
 
   <div *ngIf="createdHorse">
     <h2>Created Horse:</h2>
-    <div class="row">
-      <div class="col-3">Name</div>
-      <div class="col-9">{{ createdHorse.name }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Description</div>
-      <div class="col-9">{{ createdHorse.description }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Date of Birth</div>
-      <div class="col-9">{{ createdHorse.dob }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">sex</div>
-      <div class="col-9">{{ createdHorse.sex }}</div>
-    </div>
-    <div class="row">
-      <div class="col-3">Favourite food</div>
-      <div class="col-9">{{ createdHorse.foodId }}</div>
-    </div>
-    <br>
+    <app-show-horse [model]="createdHorse"></app-show-horse>
   </div>
   <button type="reset" class="btn btn-primary" (click)="newHorse(); createHorseForm.reset()">New horse</button>
 </div>

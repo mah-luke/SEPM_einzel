@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Horse} from '../../dto/horse';
+import {HorseData} from "../../dto/horseData";
 
 @Component({
   selector: 'app-show-horse',
@@ -8,7 +9,7 @@ import {Horse} from '../../dto/horse';
 })
 export class ShowHorseComponent implements OnInit {
 
-  @Input() model: Horse;
+  @Input() model: Horse | HorseData;
 
   constructor() { }
 

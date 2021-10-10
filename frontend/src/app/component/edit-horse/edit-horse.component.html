@@ -37,18 +37,25 @@
       <input type="number" class="form-control" id="food" [(ngModel)]="model.foodId" required
              name="food" placeholder="Search for food here">
     </div>
+    <button class="btn btn-outline-dark" routerLink="/horses/{{id}}/details">Back to details</button>
     <button type="submit" class="btn btn-success" [disabled]="!editHorseForm.form.valid">Confirm edit</button>
   </form>
 </div>
 
 <div *ngIf="submitted">
   <div *ngIf="!editedHorse">
-   not edited
+    <h1>Could not edit following horse:</h1>
+    <app-show-horse [model]="model"></app-show-horse>
+    <button class="btn btn-outline-dark" routerLink="/horses/{{id}}/details">Back to details</button>
+    <button class="btn btn-info" (click)="reEditHorse()">Back to edit</button>
   </div>
 
   <div *ngIf="editedHorse">
-    edited
+    <h1>Successfully edited following horse:</h1>
+    <app-show-horse [model]="editedHorse"></app-show-horse>
+    <button class="btn btn-outline-dark" routerLink="/horses/{{id}}/details">Back to details</button>
   </div>
-  <button type="reset" class="btn btn-primary" (click)="reEditHorse(); ">Back to edit</button>
+
 </div>
+
 

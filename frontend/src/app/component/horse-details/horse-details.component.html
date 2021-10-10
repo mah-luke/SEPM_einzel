@@ -4,6 +4,7 @@
   <h1>Details of horse: {{model.name}}</h1>
   <app-show-horse [model]="model"></app-show-horse>
 
+  <button class="btn btn-outline-dark" routerLink="/horses">Back to Search</button>
   <button class="btn btn-info" routerLink="/horses/{{model.id}}/edit">Edit Horse</button>
   <button class="btn btn-danger" (click)="deleteHorse()">Delete Horse</button>
 
