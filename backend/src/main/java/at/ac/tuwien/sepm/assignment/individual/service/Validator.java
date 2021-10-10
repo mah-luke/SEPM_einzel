@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 
 public interface Validator<Type> {
@@ -10,5 +11,5 @@ public interface Validator<Type> {
      * @return if valid: validated Object,
      *             else: null
      */
-    Type validate(Type obj) throws ValidationException;
+    Type validate(Type obj) throws ValidationException, ServiceException;
 }
