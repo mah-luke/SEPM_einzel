@@ -27,9 +27,11 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
     private final JdbcTemplate jdbcTemplate;
+    private final FoodJdbcDao foodJdbcDao;
 
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.foodJdbcDao = foodJdbcDao;
     }
 
     @Override
@@ -125,7 +127,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(result.getString("description"));
         horse.setDob(result.getDate("dob"));
         horse.setSex(Sex.valueOf(result.getString("sex")));
-        horse.setFoodId(result.getLong("foodId"));
+        horse.setFood(foodJdbcDao.getFood(result.getLong("foodId")));
 
         return horse;
     }

@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class HorseMapper {
 
+    private FoodMapper foodMapper;
+
+    public HorseMapper(FoodMapper foodMapper) {
+        this.foodMapper = foodMapper;
+    }
+
     public HorseDto entityToDto(Horse horse) {
         if (horse == null) return null;
 
@@ -16,7 +22,7 @@ public class HorseMapper {
                 horse.getDescription(),
                 horse.getDob(),
                 horse.getSex(),
-                horse.getFoodId()
+                foodMapper.entityToDto(horse.getFood())
         );
     }
 
@@ -29,7 +35,7 @@ public class HorseMapper {
         horse.setDescription(horseDto.description());
         horse.setDob(horseDto.dob());
         horse.setSex(horseDto.sex());
-        horse.setFoodId(horseDto.foodId());
+        horse.setFood(foodMapper.dtoToEntity(horseDto.food()));
 
         return horse;
     }

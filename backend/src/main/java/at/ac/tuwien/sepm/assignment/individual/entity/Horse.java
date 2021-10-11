@@ -9,7 +9,7 @@ public class Horse {
     private String description;
     private Date dob;
     private Sex sex;
-    private Long foodId;
+    private Food food;
 
     public Long getId() {
         return id;
@@ -51,11 +51,11 @@ public class Horse {
         this.sex = sex;
     }
 
-    public Long getFoodId() {
-        return foodId;
+    public Food getFood() {
+        return food;
     }
 
-    public void setFoodId(Long foodId) {
-        this.foodId = foodId;
+    public void setFood(Food food) {
+        this.food = food;
     }
 }
