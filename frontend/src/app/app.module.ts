@@ -13,6 +13,9 @@ import { EditHorseComponent } from './component/edit-horse/edit-horse.component'
 import { ShowHorseComponent } from './component/show-horse/show-horse.component';
 import { HorseDetailsComponent } from './component/horse-details/horse-details.component';
 import { HorseFormComponent } from './component/horse-form/horse-form.component';
+import { CreateFoodComponent } from './component/create-food/create-food.component';
+import { FoodComponent } from './component/food/food.component';
+import { ShowFoodComponent } from './component/show-food/show-food.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { HorseFormComponent } from './component/horse-form/horse-form.component'
     ShowHorseComponent,
     HorseDetailsComponent,
     HorseFormComponent,
+    CreateFoodComponent,
+    FoodComponent,
+    ShowFoodComponent,
   ],
   imports: [
     BrowserModule,

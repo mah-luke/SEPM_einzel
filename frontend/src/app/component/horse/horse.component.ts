@@ -28,7 +28,7 @@ export class HorseComponent implements OnInit {
       },
       error: error => {
         console.error('Error fetching horses', error.message);
-        this.error = error.error;
+        this.error = error;
       }
     });
   }

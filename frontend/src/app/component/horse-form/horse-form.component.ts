@@ -9,7 +9,7 @@ import {NgForm} from '@angular/forms';
   styleUrls: ['./horse-form.component.scss']
 })
 export class HorseFormComponent implements OnInit {
-  @ViewChild('horseForm') public sub: NgForm;
+  @ViewChild('horseForm') public form: NgForm;
 
   @Input() model: HorseData;
   @Output() emitter = new EventEmitter<HorseData>();
@@ -22,8 +22,7 @@ export class HorseFormComponent implements OnInit {
 
   onSubmit() {
     this.emitter.emit(this.model);
-    this.sub.reset();
-    console.log(this.sub.pristine);
+    this.form.reset();
   }
 
 }

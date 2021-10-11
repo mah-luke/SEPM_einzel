@@ -1,0 +1,22 @@
+<app-show-error *ngIf="error" [(error)]="error"></app-show-error>
+
+<div class="flex-horizontal full-width mt-3">
+  <button class="btn btn-light mr-1" (click)="reloadFood()">&#x21bb;</button>
+</div>
+
+<div class="mt-3">
+  <table class="table table-hover">
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Kilocalories</th>
+    </tr>
+    <tbody>
+    <tr *ngFor="let f of food">
+      <td>{{f.name}}</td>
+      <td>{{f.description}}</td>
+      <td>{{f.calories}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
