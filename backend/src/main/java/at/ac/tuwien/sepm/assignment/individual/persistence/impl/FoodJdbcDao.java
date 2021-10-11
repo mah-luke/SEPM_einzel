@@ -30,7 +30,7 @@ public class FoodJdbcDao implements FoodDao {
 
 
     @Override
-    public List<Food> getAll() throws PersistenceException {
+    public List<Food> getAll() {
         try {
             return jdbcTemplate.query( con -> con.prepareStatement(SQL_SELECT_ALL), this::mapRow);
         } catch (DataAccessException e) {
@@ -39,7 +39,7 @@ public class FoodJdbcDao implements FoodDao {
     }
 
     @Override
-    public Food getFood(Long id) throws PersistenceException {
+    public Food getFood(Long id) {
         try {
             List<Food> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
@@ -56,14 +56,14 @@ public class FoodJdbcDao implements FoodDao {
     }
 
     @Override
-    public Food createFood(FoodDataDto dto) throws PersistenceException {
+    public Food createFood(FoodDataDto dto) {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_CREATE, new String[] {"ID"});
                 ps.setString(1, dto.name());
                 ps.setString(2, dto.description());
-                ps.setDouble(3, dto.calories());
+                ps.setObject(3, dto.calories(), java.sql.Types.DOUBLE);
                 return ps;
             }, keyHolder);
 

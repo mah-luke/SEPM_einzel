@@ -35,7 +35,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getAll() throws PersistenceException {
+    public List<Horse> getAll() {
         try {
             return jdbcTemplate.query( con -> con.prepareStatement(SQL_SELECT_ALL), this::mapRow);
         } catch (DataAccessException e) {
@@ -44,7 +44,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse getHorse(long id) throws PersistenceException {
+    public Horse getHorse(long id) {
         try {
             List<Horse> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
@@ -61,7 +61,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse createHorse(HorseDataDto dto) throws PersistenceException {
+    public Horse createHorse(HorseDataDto dto) {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -83,7 +83,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse editHorse(long id, HorseDataDto dto) throws PersistenceException {
+    public Horse editHorse(long id, HorseDataDto dto) {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -106,7 +106,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse deleteHorse(long id) throws PersistenceException {
+    public Horse deleteHorse(long id) {
         Horse horse = getHorse(id);
         try {
             jdbcTemplate.update( con -> {
