@@ -16,9 +16,8 @@ public class FoodServiceImpl implements FoodService {
 
     private final FoodDao dao;
     private final Validator<FoodDataDto> validator;
-    private final Validator<Long> idValidator;
 
-    public FoodServiceImpl(FoodDao dao, Validator<FoodDataDto> validator, Validator<Long> idValidator) {
+    public FoodServiceImpl(FoodDao dao, Validator<FoodDataDto> validator) {
         this.dao = dao;
         this.validator = validator;
         this.idValidator = idValidator;
@@ -35,7 +34,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Food getFood(long id) throws ServiceException {
-        id = idValidator.validate(id);
+        id = validator.validateId(id);
         try {
             return dao.getFood(id);
         } catch (PersistenceException e) {
@@ -45,7 +44,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Food createFood(FoodDataDto dto) throws ServiceException {
-        dto = validator.validate(dto);
+        dto = validator.validateObj(dto);
         try {
             return dao.createFood(dto);
         } catch (PersistenceException e) {

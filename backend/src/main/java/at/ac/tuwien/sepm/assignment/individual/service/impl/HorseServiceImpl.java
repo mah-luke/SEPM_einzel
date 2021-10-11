@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
@@ -15,12 +16,12 @@ import java.util.List;
 public class HorseServiceImpl implements HorseService {
     private final HorseDao dao;
     private final Validator<HorseDataDto> validator;
-    private final Validator<Long> idValidator;
+    private final Validator<FoodDataDto> foodValidator;
 
-    public HorseServiceImpl(HorseDao dao, Validator<HorseDataDto> validator, Validator<Long> idValidator) {
+    public HorseServiceImpl(HorseDao dao, Validator<HorseDataDto> validator, Validator<FoodDataDto> foodValidator) {
         this.dao = dao;
         this.validator = validator;
-        this.idValidator = idValidator;
+        this.foodValidator = foodValidator;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse createHorse(HorseDataDto dto) throws ServiceException {
-        dto = validator.validate(dto);
+        dto = validator.validateObj(dto);
         try {
             return dao.createHorse(dto);
         } catch (PersistenceException e) {
@@ -44,8 +45,8 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse editHorse(long id, HorseDataDto dto) throws ServiceException {
-        idValidator.validate(id);
-        dto = validator.validate(dto);
+        foodValidator.validateId(id);
+        dto = validator.validateObj(dto);
         try {
             return dao.editHorse(id, dto);
         } catch (PersistenceException e) {
@@ -55,7 +56,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse deleteHorse(long id) throws ServiceException {
-        id = idValidator.validate(id);
+        id = validator.validateId(id);
         try {
             return dao.deleteHorse(id);
         } catch (PersistenceException e) {
@@ -65,7 +66,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse getHorse(long id) throws ServiceException {
-        id = idValidator.validate(id);
+        id = validator.validateId(id);
         try {
             return dao.getHorse(id);
         } catch (PersistenceException e) {
