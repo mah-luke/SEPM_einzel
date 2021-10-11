@@ -34,8 +34,29 @@ public class FoodValidator  implements Validator<FoodDataDto> {
     }
 
     @Override
-    public Map<String, String> validateQueryParams(Map<String, String> queryParams) {
-        return queryParams;
+    public Map<String, String> validateQueryParams(Map<String, String> qParams) {
+        final String MSG = "Query parameter ";
+
+        for (String key : qParams.keySet()) {
+            String val = qParams.get(key);
+
+            if (val == null) throw new IllegalArgumentException(MSG + key + " was null!");
+            else if (val.isBlank()) throw new IllegalArgumentException(MSG + key + " was empty!");
+            checkLength(val);
+
+            switch (key.toUpperCase()) {
+                case "NAME", "DESCRIPTION" -> {}
+                case "CALORIES" -> {
+                    try {
+                        Double.valueOf(val);
+                    } catch(NumberFormatException e) {
+                        throw new IllegalArgumentException(MSG + "calories could not be parsed to double!", e);
+                    }
+                }
+                default -> throw new IllegalArgumentException("Got not supported query parameter: " + key);
+            }
+        }
+        return qParams;
     }
 
     private String checkLength(String s){

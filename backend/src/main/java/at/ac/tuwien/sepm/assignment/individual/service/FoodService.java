@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Food;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FoodService {
 
@@ -12,8 +13,9 @@ public interface FoodService {
      * Lists all food stored in the system.
      *
      * @return list of all stored food
+     * @param qparams the query parameters of the search
      */
-    List<Food> allFood() throws ServiceException;
+    List<Food> allFood(Map<String, String> qparams) throws ServiceException;
 
     /**
      * Retrieve an existing food in the system.

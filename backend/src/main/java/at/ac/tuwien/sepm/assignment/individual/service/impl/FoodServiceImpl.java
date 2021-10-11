@@ -10,6 +10,7 @@ import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FoodServiceImpl implements FoodService {
@@ -20,13 +21,13 @@ public class FoodServiceImpl implements FoodService {
     public FoodServiceImpl(FoodDao dao, Validator<FoodDataDto> validator) {
         this.dao = dao;
         this.validator = validator;
-        this.idValidator = idValidator;
     }
 
     @Override
-    public List<Food> allFood() throws ServiceException {
+    public List<Food> allFood(Map<String, String> qparams) throws ServiceException {
+        qparams = validator.validateQueryParams(qparams);
         try {
-            return dao.getAll();
+            return dao.getAll(qparams);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
