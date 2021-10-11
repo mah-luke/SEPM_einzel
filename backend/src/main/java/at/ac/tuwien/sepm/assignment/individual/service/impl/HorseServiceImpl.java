@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HorseServiceImpl implements HorseService {
@@ -24,10 +25,13 @@ public class HorseServiceImpl implements HorseService {
         this.foodValidator = foodValidator;
     }
 
+    // ASK: can validator parse values?
+
     @Override
-    public List<Horse> allHorses() throws ServiceException {
+    public List<Horse> allHorses(Map<String, String> qParams) throws ServiceException {
+        qParams = validator.validateQueryParams(qParams);
         try {
-            return dao.getAll();
+            return dao.getAll(qParams);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

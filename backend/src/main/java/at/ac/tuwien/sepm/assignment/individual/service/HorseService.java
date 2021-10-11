@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service for working with horses.
@@ -15,7 +16,7 @@ public interface HorseService {
      *
      * @return list of all stored horses
      */
-    List<Horse> allHorses() throws ServiceException;
+    List<Horse> allHorses(Map<String, String> qparams) throws ServiceException;
 
     /**
      * Creates a new horse in the system.

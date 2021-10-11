@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @RestController
@@ -29,10 +30,10 @@ public class HorseEndpoint {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Stream<HorseDto> allHorses() {
+    public Stream<HorseDto> allHorses(@RequestParam Map<String, String> qParams) {
         LOGGER.info("GET {}:", BASE_PATH);
         try {
-            return service.allHorses().stream().map(mapper::entityToDto);
+            return service.allHorses(qParams).stream().map(mapper::entityToDto);
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);

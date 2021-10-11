@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Data Access Object for horses.
@@ -14,8 +15,9 @@ public interface HorseDao {
      * Get all horses stored in the persistent data store.
      *
      * @return a list of all stored horses
+     * @param qParams the query parameters
      */
-    List<Horse> getAll();
+    List<Horse> getAll(Map<String, String> qParams);
 
     /**
      * Get a specific horse in the persistent data store by its id.

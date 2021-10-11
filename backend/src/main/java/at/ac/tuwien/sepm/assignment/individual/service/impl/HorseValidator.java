@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.*;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
+import enums.Sex;
 import org.springframework.stereotype.Component;
 
 
@@ -64,8 +65,45 @@ public class HorseValidator implements Validator<HorseDataDto> {
     }
 
     @Override
-    public Map<String, String> validateQueryParams(Map<String, String> queryParams) {
-        return queryParams;
+    public Map<String, String> validateQueryParams(Map<String, String> qParams) {
+        final String MSG = "Query parameter ";
+
+        for (String key : qParams.keySet()) {
+            String val = qParams.get(key);
+
+            if (val == null) throw new IllegalArgumentException(MSG + key + " was null!");
+            else if (val.isBlank()) throw new IllegalArgumentException(MSG + key + " was empty!");
+            checkLength(val);
+
+            switch (key.toUpperCase()) {
+                case "NAME", "DESCRIPTION" -> {
+                }
+                case "DOB" -> {
+                    try {
+                        Date.valueOf(val);
+                    } catch(java.lang.IllegalArgumentException e) {
+                        throw new IllegalArgumentException(MSG + "dob could not be parsed to Date!", e);
+                    }
+                }
+                case "SEX" -> {
+                    try {
+                        Sex.valueOf(val.substring(0,1).toUpperCase() + val.substring(1).toLowerCase());
+                    } catch(java.lang.IllegalArgumentException e) {
+                        throw new IllegalArgumentException(MSG + "sex wasn't parseable to enum Sex!", e);
+                    }
+                }
+                case "FOODID" -> {
+                    try {
+                        Long.valueOf(val);
+                    } catch(NumberFormatException e) {
+                        throw new IllegalArgumentException(MSG + "foodid could not be parsed to long!", e);
+                    }
+                }
+                default -> throw new IllegalArgumentException("Got not supported query parameter: " + key);
+            }
+        }
+
+        return qParams;
     }
 
     private String checkLength(String s){
