@@ -20,7 +20,7 @@ export class FoodComponent implements OnInit {
   }
 
   reloadFood() {
-    this.service.getAll().subscribe({
+    this.service.getAll({}).subscribe({
       next: data => {
         console.log('received food', data);
         this.food = data;
