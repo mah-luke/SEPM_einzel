@@ -6,7 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.*;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
-import enums.Sex;
+import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import org.springframework.stereotype.Component;
 
 

@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.entity;
 
-import enums.Sex;
+import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import java.sql.Date;
 
 public class Horse {

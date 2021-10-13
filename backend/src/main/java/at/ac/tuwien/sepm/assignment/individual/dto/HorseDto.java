@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.dto;
 
-import enums.Sex;
+import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 
 import java.sql.Date;
 
