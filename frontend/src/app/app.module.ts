@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HorseComponent} from './component/horse/horse.component';
 import {CreateHorseComponent} from './component/create-horse/create-horse.component';
 import { ShowErrorComponent } from './component/show-error/show-error.component';
@@ -16,6 +16,7 @@ import { HorseFormComponent } from './component/horse-form/horse-form.component'
 import { CreateFoodComponent } from './component/create-food/create-food.component';
 import { FoodComponent } from './component/food/food.component';
 import { ShowFoodComponent } from './component/show-food/show-food.component';
+import { SearchFoodComponent } from './component/search-food/search-food.component';
 
 @NgModule({
   declarations: [
@@ -31,13 +32,15 @@ import { ShowFoodComponent } from './component/show-food/show-food.component';
     CreateFoodComponent,
     FoodComponent,
     ShowFoodComponent,
+    SearchFoodComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
