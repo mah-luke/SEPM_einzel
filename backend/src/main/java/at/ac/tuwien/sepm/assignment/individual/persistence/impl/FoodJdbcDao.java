@@ -66,7 +66,7 @@ public class FoodJdbcDao implements FoodDao {
     }
 
     @Override
-    public Food getFood(Long id) {
+    public Food getFood(long id) {
         try {
             List<Food> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);

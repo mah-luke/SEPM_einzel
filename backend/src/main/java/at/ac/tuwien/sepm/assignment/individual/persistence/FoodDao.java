@@ -22,7 +22,7 @@ public interface FoodDao {
      * @param id a valid id of a stored horse
      * @return the stored horse corresponding to the id
      */
-    Food getFood(Long id) throws PersistenceException;
+    Food getFood(long id) throws PersistenceException;
 
     /**
      * Create a new food and store it in the persistent data store.
