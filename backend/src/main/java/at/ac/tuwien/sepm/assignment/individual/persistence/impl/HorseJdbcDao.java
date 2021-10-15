@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
+import aj.org.objectweb.asm.Type;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
@@ -106,7 +107,7 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setString(2, dto.description());
                 ps.setDate(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
-                ps.setLong(5, dto.foodId());
+                ps.setObject(5, dto.foodId(), Type.LONG);
                 return ps;
             }, keyHolder);
 
@@ -128,7 +129,7 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setString(2, dto.description());
                 ps.setDate(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
-                ps.setLong(5, dto.foodId());
+                ps.setObject(5, dto.foodId(), Type.LONG);
                 ps.setLong(6, id);
                 return ps;
             }, keyHolder);
