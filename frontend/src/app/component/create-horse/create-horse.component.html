@@ -1,19 +1,22 @@
 <app-show-error *ngIf="error" [(error)]="error"></app-show-error>
 
-<div [hidden]="submitted" *ngIf="model">
-  <h1>Create horse</h1>
-  <app-horse-form [model]="model" (emitter)="onSubmit($event)"></app-horse-form>
+<div [hidden]="submitted">
+  <form (ngSubmit)="onSubmit()">
+    <h1>Create horse</h1>
+    <app-horse-form [formControl]="form"></app-horse-form>
+    <button type="button" class="btn btn-outline-dark" routerLink="/horses/">Back to Search</button>
+    <button type="submit" class="btn btn-success"  [disabled]="!form.valid">Submit new Horse</button>
+  </form>
 </div>
 
 <div *ngIf="submitted">
   <div *ngIf="!createdHorse">
     <h2 *ngIf="error">Horse failed to create:</h2>
-    <app-show-horse [model]="model"></app-show-horse>
   </div>
 
   <div *ngIf="createdHorse">
     <h2>Created Horse:</h2>
     <app-show-horse [model]="createdHorse"></app-show-horse>
   </div>
-  <button type="reset" class="btn btn-primary" (click)="newHorse()">New horse</button>
+  <button type="reset" class="btn btn-primary" (click)="newHorse()">Create another</button>
 </div>

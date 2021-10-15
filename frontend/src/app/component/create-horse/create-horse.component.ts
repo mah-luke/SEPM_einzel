@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {HorseData} from '../../dto/horseData';
 import {HorseService} from '../../service/horse.service';
 import {Horse} from '../../dto/horse';
 import {HttpErrorResponse} from '@angular/common/http';
+import {FormControl} from '@angular/forms';
+import {HorseData} from '../../dto/horseData';
+import {HorseMapper} from '../../mapper/horse-mapper';
+import {HorseFormValues} from '../../dto/horseFormValues';
 
 @Component({
   selector: 'app-create-horse',
@@ -12,22 +15,21 @@ import {HttpErrorResponse} from '@angular/common/http';
 export class CreateHorseComponent implements OnInit {
   createdHorse: Horse;
   submitted = false;
-  error: HttpErrorResponse = null;
-  model: HorseData = new HorseData();
+  error: HttpErrorResponse;
+  form = new FormControl(null);
 
-  constructor(private service: HorseService) {
+  constructor(private service: HorseService, private mapper: HorseMapper) {
   }
 
-
-  onSubmit(model: HorseData) {
-    console.log('submitted horse creation form');
-    this.model = model;
+  onSubmit() {
+    const formValues: HorseFormValues = this.form.value;
+    console.log('submitted horse creation form', formValues);
     this.submitted = true;
-    this.createHorse();
+    this.createHorse(this.mapper.formValuesToHorseData(formValues));
   }
 
-  createHorse() {
-    this.service.createHorse(this.model).subscribe( {
+  createHorse(horse: HorseData) {
+    this.service.createHorse(horse).subscribe( {
       next: data => {
         console.log('horse created', data);
         this.createdHorse = data;
@@ -45,7 +47,7 @@ export class CreateHorseComponent implements OnInit {
 
   public newHorse() {
     this.vanishError();
-    this.model = new HorseData();
+    this.form.reset();
     this.submitted = false;
     this.createdHorse = null;
   }
