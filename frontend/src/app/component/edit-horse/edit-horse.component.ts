@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {Sex} from '../../enums/sex';
+import {Component, OnInit} from '@angular/core';
 import {Horse} from '../../dto/horse';
 import {HorseService} from '../../service/horse.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {HorseData} from '../../dto/horseData';
+import {FormControl} from '@angular/forms';
+import {HttpErrorResponse} from '@angular/common/http';
+import {HorseMapper} from '../../mapper/horse-mapper';
+import {HorseFormValues} from '../../dto/horseFormValues';
 
 @Component({
   selector: 'app-edit-horse',
@@ -12,13 +15,12 @@ import {HorseData} from '../../dto/horseData';
 })
 export class EditHorseComponent implements OnInit {
   id: string;
-  sexes: Sex[] = Object.values(Sex);
   editedHorse: Horse;
   submitted = false;
-  error = null;
-  model: HorseData;
+  error: HttpErrorResponse;
+  form = new FormControl();
 
-  constructor(private service: HorseService, private route: ActivatedRoute) {
+  constructor(private service: HorseService, private route: ActivatedRoute, private mapper: HorseMapper) {
   }
 
   ngOnInit(): void {
@@ -28,22 +30,30 @@ export class EditHorseComponent implements OnInit {
     });
   }
 
-  onSubmit(model: HorseData) {
-    console.log('submitted horse editing form');
-    this.model = model;
+  onSubmit() {
+    const formValue: HorseFormValues = this.form.value;
+    console.log('submitted horse editing form', formValue);
     this.submitted = true;
-    this.editHorse();
+    this.editHorse(
+      new HorseData(
+        formValue.name,
+        formValue.description,
+        formValue.dob,
+        formValue.sex,
+        formValue.food?.id
+      )
+    );
   }
 
-  editHorse() {
-    this.service.editHorse(this.id, this.model).subscribe( {
+  editHorse(horse: HorseData) {
+    this.service.editHorse(this.id, horse).subscribe( {
       next: data => {
         console.log('horse edited', data);
         this.editedHorse = data;
       },
       error: error => {
         console.error('Cannot edit horse: ', error);
-        this.error = error.error;
+        this.error = error;
       }
     });
   }
@@ -52,21 +62,14 @@ export class EditHorseComponent implements OnInit {
     this.service.getHorse(this.id).subscribe( {
       next: data => {
         console.log('horse retrieved', data);
-        this.model = new HorseData(
-          data.name,
-          data.dob,
-          data.sex,
-          data.food.id,
-          data.description
-        );
+        this.form.setValue(this.mapper.horseToFormValues(data));
       },
       error: error => {
         console.error('Cannot edit horse: ', error);
-        this.error = error.error;
+        this.error = error;
       }
     });
   }
-
 
   public reEditHorse() {
     this.vanishError();
