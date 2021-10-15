@@ -164,7 +164,9 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(result.getString("description"));
         horse.setDob(result.getDate("dob"));
         horse.setSex(Sex.valueOf(result.getString("sex")));
-        horse.setFood(foodJdbcDao.getFood(result.getLong("foodId")));
+
+        Long foodId = (Long) result.getObject("foodId");
+        horse.setFood(foodId == null? null : foodJdbcDao.getFood(foodId));
 
         return horse;
     }
