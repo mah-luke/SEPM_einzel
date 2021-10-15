@@ -47,13 +47,15 @@ public class HorseValidator implements Validator<HorseDataDto> {
         if (dto.sex() == null) throw new IllegalArgumentException("Sex for Horses must be set!");
 
         // foodId
-        foodValidator.validateId(dto.foodId());
-        try {
-            foodDao.getFood(dto.foodId());
-        } catch (NotFoundException e) {
-            throw new ValidationException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
-        } catch (PersistenceException e) {
-            throw new ServiceException(e.getMessage(), e);
+        if (dto.foodId() != null) {
+            foodValidator.validateId(dto.foodId());
+            try {
+                foodDao.getFood(dto.foodId());
+            } catch (NotFoundException e) {
+                throw new ValidationException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
+            } catch (PersistenceException e) {
+                throw new ServiceException(e.getMessage(), e);
+            }
         }
         return dto;
     }
