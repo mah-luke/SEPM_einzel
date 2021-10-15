@@ -4,18 +4,18 @@ import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import java.sql.Date;
 
 public class Horse {
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private Date dob;
     private Sex sex;
     private Food food;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
