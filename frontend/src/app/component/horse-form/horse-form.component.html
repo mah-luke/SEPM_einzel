@@ -1,37 +1,35 @@
-<form (ngSubmit)="onSubmit()" #horseForm="ngForm" *ngIf="model">
+<div [formGroup]="formGroup" *ngIf="formGroup">
   <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" [(ngModel)]="model.name" required #name="ngModel"
-           name="name" placeholder="Enter name here">
-    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">Name must not be empty</div>
+    <input type="text" class="form-control" id="name" formControlName="name" placeholder="Enter name here">
+    <div [hidden]="inputOk('name')" class="alert alert-danger">
+      Name must not be empty
+    </div>
   </div>
 
   <div class="form-group">
     <label for="description">Description</label>
-    <input type="text" class="form-control" id="description" [(ngModel)]="model.description"
-           name="description" placeholder="Enter description here">
+    <input type="text" class="form-control" id="description" formControlName="description"
+           placeholder="Enter description here">
   </div>
 
   <div class="form-group">
     <label for="dob">Date of Birth</label>
-    <input type="date" class="form-control" id="dob" [(ngModel)]="model.dob" name="dob" required #dob="ngModel">
-    <div [hidden]="dob.valid || dob.pristine" class="alert alert-danger">Date of birth must be selected</div>
+    <input type="date" class="form-control" id="dob" formControlName="dob" name="dob">
+    <div [hidden]="inputOk('dob')" class="alert alert-danger">Date of birth must be selected</div>
   </div>
 
   <div class="form-group">
     <label for="sex">Sex</label>
-    <select class="form-control" id="sex" required name="sex" [(ngModel)]="model.sex" #sex="ngModel">
-      <option hidden disabled selected value> -- select an option -- </option>
+    <select class="form-control" id="sex" required formControlName="sex">
+      <option hidden selected> -- select an option -- </option>
       <option *ngFor='let sex of sexes'>{{sex}}</option>
     </select>
-    <div [hidden]="sex.valid || sex.pristine" class="alert alert-danger">Sex must be selected</div>
+    <div [hidden]="inputOk('sex')" class="alert alert-danger">Sex must be selected</div>
   </div>
 
   <div class="form-group">
     <label for="food">Favourite Food</label>
-    <input type="number" class="form-control" id="food" [(ngModel)]="model.foodId" required
-           name="food" placeholder="Search for food here">
+    <app-search-food id="food" formControlName="food"></app-search-food>
   </div>
-
-  <button type="submit" class="btn btn-success"  [disabled]="(horseForm.form.invalid || horseForm.form.pristine)">Submit Horse</button>
-</form>
+</div>
