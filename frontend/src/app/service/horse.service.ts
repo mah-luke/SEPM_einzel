@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
 import {Horse} from '../dto/horse';
 import {HorseData} from '../dto/horseData';
-import {StringMap} from '@angular/compiler/src/compiler_facade_interface';
+import {HorseQuery} from '../dto/horseQuery';
 
 const baseUri = environment.backendUrl + '/horses';
 
@@ -22,7 +22,7 @@ export class HorseService {
    *
    * @return observable list of found horses.
    */
-  getAll(params: StringMap): Observable<Horse[]> {
+  getAll(params: HorseQuery): Observable<Horse[]> {
     let httpParams = new HttpParams();
     for (const key in params) {
       if (params[key]) {
