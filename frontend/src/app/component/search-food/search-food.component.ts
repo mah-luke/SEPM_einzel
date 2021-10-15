@@ -1,29 +1,72 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Component, forwardRef, OnInit} from '@angular/core';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,} from '@angular/forms';
 import {FoodService} from '../../service/food.service';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Food} from '../../dto/food';
 
 @Component({
   selector: 'app-search-food',
   templateUrl: './search-food.component.html',
-  styleUrls: ['./search-food.component.scss']
+  styleUrls: ['./search-food.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SearchFoodComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => SearchFoodComponent),
+      multi: true
+    }
+  ]
 })
-export class SearchFoodComponent implements OnInit {
-  @Output() ngModel: EventEmitter<Food> = new EventEmitter<Food>();
-  // @Input() form: FormGroup;
+export class SearchFoodComponent implements OnInit, ControlValueAccessor {
   selected: Food;
-
   searchResult: Array<Food>;
-  focused = false;
-  error: HttpErrorResponse;
 
   form = new FormGroup({
     name: new FormControl(null)
   });
 
+  get value(): Food {
+    return this.selected;
+  }
 
-  constructor(private service: FoodService) { }
+  set value(value: Food) {
+    this.selected = value;
+    this.onChange(value);
+    this.onTouched();
+  }
+
+  constructor(private service: FoodService) {
+  }
+
+  onChange: any = () => {};
+
+  onTouched: any = () => {};
+
+  writeValue(value: Food): void {
+        if (value) {
+          this.value = value;
+        }
+
+        if (value === null) {
+          this.form.reset();
+          this.reset();
+        }
+    }
+
+  validate(_: FormControl) {
+    return null;
+    // return this.form.valid ? null : { profile: { valid: false } };
+  }
+
+  registerOnChange(fn: any): void {
+        this.onChange = fn;
+    }
+  registerOnTouched(fn: any): void {
+        this.onTouched = fn;
+    }
 
   ngOnInit(): void {
   }
@@ -36,7 +79,6 @@ export class SearchFoodComponent implements OnInit {
       },
       error: error => {
         console.error('Error fetching search result', error.message);
-        this.error = error;
       }
     });
   }
@@ -49,23 +91,17 @@ export class SearchFoodComponent implements OnInit {
   select(food: Food) {
     console.log('selected: ', food);
     this.selected = food;
-    this.ngModel.emit(food);
+    this.onChange(food);
+    this.onTouched();
   }
 
   unselect() {
     this.selected = null;
   }
 
-  focusIn() {
-    this.focused = true;
-  }
-
-  focusOut() {
-    this.focused = false;
-  }
-
   reset() {
     this.searchResult=null;
     this.select(null);
+    this.form.patchValue({name: null});
   }
 }
