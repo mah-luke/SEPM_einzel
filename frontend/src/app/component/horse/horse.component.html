@@ -6,7 +6,7 @@
 </div>
 
 <div *ngIf="search">
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" class="form-control">
 
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name" formControlName="name">
@@ -17,11 +17,11 @@
     <label for="sex">Sex</label>
     <select class="form-control" id="sex" formControlName="sex">
       <option value=""> -- no selection -- </option>
-      <option *ngFor="let sex of sexes">{{sex}}</option>
+      <option *ngFor="let sex of sexes" value="{{sex}}">{{sex}}</option>
     </select>
 
-    <label for="foodId">Food</label>
-    <app-search-food id="foodId" (ngModel)="setFoodId($event)"></app-search-food>
+    <label for="food">Food</label>
+    <app-search-food id="food" formControlName="food"></app-search-food>
 
     <button *ngIf="search" type="submit" class="btn btn-success mt-1 border-1">Search</button>
   </form>
@@ -41,7 +41,7 @@
         <td routerLink="/horses/{{horse.id}}/details">{{horse.name}}</td>
         <td routerLink="/horses/{{horse.id}}/details">{{horse.dob}}</td>
         <td routerLink="/horses/{{horse.id}}/details">{{horse.sex}}</td>
-        <td routerLink="/horses/{{horse.id}}/details">{{horse.food.name}}</td>
+        <td routerLink="/horses/{{horse.id}}/details">{{horse.food?.name}}</td>
         <td><button class="btn btn-outline-primary" routerLink="/horses/{{horse.id}}/edit">Edit</button></td>
         <td><button class="btn btn-danger" (click)="deleteHorse(horse.id)">Delete</button></td>
       </tr>
