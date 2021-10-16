@@ -6,7 +6,8 @@ export class HorseQuery {
     public description?: string,
     public dob?: Date,
     public sex?: Sex,
-    public foodId?: number
+    public foodId?: number,
+    public limit?: number
   ) {
   }
 
