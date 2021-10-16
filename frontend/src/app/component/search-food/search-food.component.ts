@@ -2,6 +2,7 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,} from '@angular/forms';
 import {FoodService} from '../../service/food.service';
 import {Food} from '../../dto/food';
+import {FoodQuery} from '../../dto/foodQuery';
 
 @Component({
   selector: 'app-search-food',
@@ -72,7 +73,9 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
   }
 
   fetchFood(): void {
-    this.service.getAll(this.form.value).subscribe({
+    const val = new FoodQuery(this.form.get('name').value, null, null, 5);
+
+    this.service.getAll(val).subscribe({
       next: data => {
         console.log('recieved query: ', data);
         this.searchResult = data;

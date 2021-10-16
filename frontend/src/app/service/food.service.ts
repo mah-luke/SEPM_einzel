@@ -4,7 +4,7 @@ import {Food} from '../dto/food';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {FoodData} from '../dto/foodData';
-import {StringMap} from '@angular/compiler/src/compiler_facade_interface';
+import {FoodQuery} from '../dto/foodQuery';
 
 const baseUri = environment.backendUrl + '/food';
 
@@ -15,7 +15,7 @@ export class FoodService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(params: StringMap): Observable<Food[]> {
+  getAll(params: FoodQuery): Observable<Food[]> {
     let httpParams = new HttpParams();
     for (const key in params){
       if (params[key]) {
