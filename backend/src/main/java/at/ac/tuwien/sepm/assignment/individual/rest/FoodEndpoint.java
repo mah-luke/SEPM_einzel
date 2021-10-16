@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.FoodQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.mapper.FoodMapper;
 import at.ac.tuwien.sepm.assignment.individual.service.FoodService;
@@ -31,8 +32,8 @@ public class FoodEndpoint {
     // ASK: correct way of query params mapping???
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Stream<FoodDto> allFood(@RequestParam(required = false) Map<String, String> qparams) {
-        LOGGER.info("GET {}:", BASE_PATH);
+    public Stream<FoodDto> allFood(FoodQueryParamsDto qparams) {
+        LOGGER.info("GET {}: {}", BASE_PATH, qparams.toString());
         try {
             return service.allFood(qparams).stream().map(mapper::entityToDto);
         } catch (ServiceException e) {

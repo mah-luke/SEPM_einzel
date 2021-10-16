@@ -1,11 +1,11 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.FoodQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Food;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
 import java.util.List;
-import java.util.Map;
 
 public interface FoodService {
 
@@ -15,7 +15,7 @@ public interface FoodService {
      * @return list of all stored food
      * @param qparams the query parameters of the search
      */
-    List<Food> allFood(Map<String, String> qparams) throws ServiceException;
+    List<Food> allFood(FoodQueryParamsDto qparams) throws ServiceException;
 
     /**
      * Retrieve an existing food in the system.
