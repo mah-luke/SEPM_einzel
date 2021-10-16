@@ -54,8 +54,9 @@ public class HorseJdbcDao implements HorseDao {
         if (qParams.foodId() != null) queries.add("foodId = ?");
 
         if (!queries.isEmpty())
-            queryBuilder.append(" WHERE ").append(String.join(" AND ", queries)).append(";");
-        String query = queryBuilder.toString();
+            queryBuilder.append(" WHERE ").append(String.join(" AND ", queries));
+        if (qParams.limit() != null) queryBuilder.append(" LIMIT ?");
+        String query = queryBuilder.append(";").toString();
 
         try {
             return jdbcTemplate.query( con -> {
@@ -72,6 +73,8 @@ public class HorseJdbcDao implements HorseDao {
                     ps.setString(++counter, qParams.sex().toString().toUpperCase());
                 if (qParams.foodId() != null)
                     ps.setLong(++counter, qParams.foodId());
+                if (qParams.limit() != null)
+                    ps.setLong(++counter, qParams.limit());
 
                 return ps;
             }, this::mapRow);

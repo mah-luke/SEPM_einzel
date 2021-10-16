@@ -41,6 +41,11 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
                 throw new ServiceException(e.getMessage(), e);
             }
         }
+
+        // limit
+        if (qParams.limit() != null && qParams.limit() < 1)
+            throw new ValidationException("Limit of values must be positive");
+
         return qParams;
     }
 
