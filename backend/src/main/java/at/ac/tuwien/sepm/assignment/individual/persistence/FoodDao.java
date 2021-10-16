@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.assignment.individual.persistence;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Food;
-import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface FoodDao {
      * @return a list of all stored Food
      * @param qparams the query parameters of the search
      */
-    List<Food> getAll(FoodQueryParamsDto qparams) throws PersistenceException;
+    List<Food> getAll(FoodQueryParamsDto qparams);
 
     /**
      * Get a specific food in the persistent data store by its id.
@@ -22,7 +21,7 @@ public interface FoodDao {
      * @param id a valid id of a stored horse
      * @return the stored horse corresponding to the id
      */
-    Food getFood(long id) throws PersistenceException;
+    Food getFood(long id);
 
     /**
      * Create a new food and store it in the persistent data store.
@@ -30,7 +29,7 @@ public interface FoodDao {
      * @param dto the Food to create
      * @return the id of the created Food
      */
-    Food createFood(FoodDataDto dto) throws PersistenceException;
+    Food createFood(FoodDataDto dto);
 
 
 }
