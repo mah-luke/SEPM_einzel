@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import aj.org.objectweb.asm.Type;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
@@ -16,13 +17,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class HorseJdbcDao implements HorseDao {
@@ -44,35 +43,36 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getAll(Map<String, String> qparams) {
-        StringBuilder query = new StringBuilder(SQL_SELECT_ALL);
+    public List<Horse> getAll(HorseQueryParamsDto qParams) {
+        List<String> queries = new ArrayList<>();
+        StringBuilder queryBuilder = new StringBuilder(SQL_SELECT_ALL);
 
-        Iterator<String> keys = qparams.keySet().iterator();
-        if (keys.hasNext()) query.append(" WHERE");
-        for (int i = 0; i < qparams.size(); i++) {
-            String key = keys.next();
-            if (key.equalsIgnoreCase("DOB")) query.append(String.format(" UPPER(%s) <= ?", key));
-            else if (key.equalsIgnoreCase("SEX")) query.append(String.format(" UPPER(%s) = ?", key));
-            else if (key.equalsIgnoreCase("FOODID")) query.append(String.format(" %s = ?", key));
-            else query.append(String.format(" UPPER(%s) like ?", key));
+        if (qParams.name() != null) queries.add("UPPER(name) LIKE ?");
+        if (qParams.description() != null) queries.add("UPPER(description) LIKE ?");
+        if (qParams.dob() != null) queries.add(("dob <= ?"));
+        if (qParams.sex() != null) queries.add( "UPPER(sex) = ?");
+        if (qParams.foodId() != null) queries.add("foodId = ?");
 
-            query.append(keys.hasNext()? " AND" : ";");
-        }
+        if (!queries.isEmpty())
+            queryBuilder.append(" WHERE ").append(String.join(" AND ", queries)).append(";");
+        String query = queryBuilder.toString();
 
         try {
-            String finalQuery = query.toString();
             return jdbcTemplate.query( con -> {
-                PreparedStatement ps = con.prepareStatement(finalQuery);
-                Iterator<String> keyIter = qparams.keySet().iterator();
-                for (int i = 0; i < qparams.size(); i++) {
+                PreparedStatement ps = con.prepareStatement(query);
+                int counter = 0;
 
-                    String key = keyIter.next();
-                    if (key.equalsIgnoreCase("SEX") ||
-                        key.equalsIgnoreCase("FOODID")
-                    ) ps.setString(i + 1, qparams.get(key).toUpperCase());
-                    else if (key.equalsIgnoreCase("DOB")) ps.setDate(i + 1, Date.valueOf(qparams.get(key)));
-                    else ps.setString(i + 1, "%" + qparams.get(key).toUpperCase() + "%");
-                }
+                if (qParams.name() != null)
+                    ps.setString(++counter, "%" + qParams.name().toUpperCase() + "%");
+                if (qParams.description() != null)
+                    ps.setString(++counter, "%" + qParams.description().toUpperCase() + "%");
+                if (qParams.dob() != null)
+                    ps.setDate(++counter, qParams.dob());
+                if (qParams.sex() != null)
+                    ps.setString(++counter, qParams.sex().toString().toUpperCase());
+                if (qParams.foodId() != null)
+                    ps.setLong(++counter, qParams.foodId());
+
                 return ps;
             }, this::mapRow);
         } catch (DataAccessException e) {

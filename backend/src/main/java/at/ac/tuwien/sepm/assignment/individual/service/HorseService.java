@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
@@ -16,7 +17,7 @@ public interface HorseService {
      *
      * @return list of all stored horses
      */
-    List<Horse> allHorses(Map<String, String> qparams) throws ServiceException;
+    List<Horse> allHorses(HorseQueryParamsDto qparams) throws ServiceException;
 
     /**
      * Creates a new horse in the system.

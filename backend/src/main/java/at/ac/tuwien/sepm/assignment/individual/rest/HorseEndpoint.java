@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
@@ -30,8 +31,8 @@ public class HorseEndpoint {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Stream<HorseDto> allHorses(@RequestParam Map<String, String> qParams) {
-        LOGGER.info("GET {}:", BASE_PATH);
+    public Stream<HorseDto> allHorses(HorseQueryParamsDto qParams) {
+        LOGGER.info("GET {}: {}", BASE_PATH, qParams);
         try {
             return service.allHorses(qParams).stream().map(mapper::entityToDto);
         } catch (ServiceException e) {

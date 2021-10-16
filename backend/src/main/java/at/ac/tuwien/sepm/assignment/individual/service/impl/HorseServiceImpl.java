@@ -1,35 +1,33 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
+import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class HorseServiceImpl implements HorseService {
     private final HorseDao dao;
-    private final Validator<HorseDataDto> validator;
-    private final Validator<FoodDataDto> foodValidator;
+    private final ModelValidator<HorseDataDto> validator;
+    private final Validator<HorseQueryParamsDto> queryParamsValidator;
 
-    public HorseServiceImpl(HorseDao dao, Validator<HorseDataDto> validator, Validator<FoodDataDto> foodValidator) {
+    public HorseServiceImpl(HorseDao dao, ModelValidator<HorseDataDto> validator, Validator<HorseQueryParamsDto> queryParamsValidator) {
         this.dao = dao;
         this.validator = validator;
-        this.foodValidator = foodValidator;
+        this.queryParamsValidator = queryParamsValidator;
     }
 
-    // ASK: can validator parse values?
-
     @Override
-    public List<Horse> allHorses(Map<String, String> qParams) throws ServiceException {
-        qParams = validator.validateQueryParams(qParams);
+    public List<Horse> allHorses(HorseQueryParamsDto qParams) throws ServiceException {
+        qParams = queryParamsValidator.validate(qParams);
         try {
             return dao.getAll(qParams);
         } catch (PersistenceException e) {
@@ -39,7 +37,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse createHorse(HorseDataDto dto) throws ServiceException {
-        dto = validator.validateObj(dto);
+        dto = validator.validate(dto);
         try {
             return dao.createHorse(dto);
         } catch (PersistenceException e) {
@@ -49,8 +47,8 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse editHorse(long id, HorseDataDto dto) throws ServiceException {
-        foodValidator.validateId(id);
-        dto = validator.validateObj(dto);
+        validator.validate(id);
+        dto = validator.validate(dto);
         try {
             return dao.editHorse(id, dto);
         } catch (PersistenceException e) {
@@ -60,7 +58,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse deleteHorse(long id) throws ServiceException {
-        id = validator.validateId(id);
+        id = validator.validate(id);
         try {
             return dao.deleteHorse(id);
         } catch (PersistenceException e) {
@@ -70,7 +68,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse getHorse(long id) throws ServiceException {
-        id = validator.validateId(id);
+        id = validator.validate(id);
         try {
             return dao.getHorse(id);
         } catch (PersistenceException e) {
