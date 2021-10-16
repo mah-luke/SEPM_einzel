@@ -45,8 +45,9 @@ public class FoodJdbcDao implements FoodDao {
         if(qParams.calories() != null) queries.add("calories = ?");
 
         if(!queries.isEmpty())
-            queryBuilder.append(" WHERE ").append(String.join(" AND ", queries)).append(";");
-        String query = queryBuilder.toString();
+            queryBuilder.append(" WHERE ").append(String.join(" AND ", queries));
+        if(qParams.limit() != null) queryBuilder.append(" LIMIT ?");
+        String query = queryBuilder.append(";").toString();
 
         try {
             return jdbcTemplate.query(con -> {
@@ -59,6 +60,8 @@ public class FoodJdbcDao implements FoodDao {
                     ps.setString(++counter, "%" + qParams.description().toUpperCase() + "%");
                 if (qParams.calories() != null)
                     ps.setDouble(++counter, qParams.calories());
+                if (qParams.limit() != null)
+                    ps.setLong(++counter, qParams.limit());
 
                 return ps;
             }, this::mapRow);
