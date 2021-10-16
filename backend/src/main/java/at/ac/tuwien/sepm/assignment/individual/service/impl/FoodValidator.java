@@ -22,6 +22,8 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
         checkLength(dto.description());
 
         // calories
+        if (dto.calories() != null && dto.calories() < 0)
+            throw new IllegalArgumentException("Given calories must not be below zero!");
 
         return dto;
     }
