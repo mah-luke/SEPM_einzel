@@ -10,6 +10,8 @@ public class Horse {
     private Date dob;
     private Sex sex;
     private Food food;
+    private ShallowHorse father;
+    private ShallowHorse mother;
 
     public long getId() {
         return id;
@@ -57,5 +59,21 @@ public class Horse {
 
     public void setFood(Food food) {
         this.food = food;
+    }
+
+    public ShallowHorse getFather() {
+        return father;
+    }
+
+    public void setFather(ShallowHorse father) {
+        this.father = father;
+    }
+
+    public ShallowHorse getMother() {
+        return mother;
+    }
+
+    public void setMother(ShallowHorse mother) {
+        this.mother = mother;
     }
 }

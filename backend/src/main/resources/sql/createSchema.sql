@@ -1,7 +1,3 @@
-DROP TABLE IF EXISTS horse; -- FIXME: remove line
-DROP TABLE IF EXISTS food;
-
-
 CREATE TABLE IF NOT EXISTS food
 (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +13,7 @@ CREATE TABLE IF NOT EXISTS horse
     description     VARCHAR(255),
     dob             DATE NOT NULL,
     sex             VARCHAR(255) NOT NULL CHECK (sex in ('Male', 'Female')),
-    foodId          BIGINT,
-
-    FOREIGN KEY (foodId) REFERENCES food(id)
+    foodId          BIGINT REFERENCES food(id) ON DELETE SET NULL,
+    fatherId        BIGINT REFERENCES horse(id) ON DELETE SET NULL,
+    motherID        BIGINT REFERENCES horse(id) ON DELETE SET NULL
 );

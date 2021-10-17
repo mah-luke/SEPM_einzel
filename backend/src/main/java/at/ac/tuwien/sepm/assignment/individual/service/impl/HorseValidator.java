@@ -2,9 +2,12 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import at.ac.tuwien.sepm.assignment.individual.exception.*;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
+import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import org.springframework.stereotype.Component;
 import java.sql.Date;
@@ -13,11 +16,13 @@ import java.sql.Date;
 public class HorseValidator implements ModelValidator<HorseDataDto> {
 
     private final FoodDao foodDao;
+    private final HorseDao dao;
     private final ModelValidator<FoodDataDto> foodValidator;
     private final static int MAX_LENGTH = 256;
 
-    HorseValidator(FoodDao foodDao, ModelValidator<FoodDataDto> foodValidator) {
+    HorseValidator(FoodDao foodDao, HorseDao dao, ModelValidator<FoodDataDto> foodValidator) {
         this.foodDao = foodDao;
+        this.dao = dao;
         this.foodValidator = foodValidator;
     }
 
@@ -49,6 +54,34 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                 foodDao.getFood(dto.foodId());
             } catch (NotFoundException e) {
                 throw new ValidationException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
+            } catch (PersistenceException e) {
+                throw new ServiceException(e.getMessage(), e);
+            }
+        }
+
+        // fatherId
+        if (dto.fatherId() != null){
+            validate(dto.fatherId());
+            try {
+                Horse father = dao.getHorse(dto.fatherId());
+                if (father.getSex() != Sex.Male) throw new ValidationException("Provided Father must be Male!");
+                if (father.getDob().after(dto.dob())) throw new StateConflictException("Provided Father must be older than horse!");
+            } catch (NotFoundException e) {
+                throw new ValidationException("Provided Father with id '" + dto.fatherId() + "' does not exist!", e);
+            } catch (PersistenceException e) {
+                throw new ServiceException(e.getMessage(), e);
+            }
+        }
+
+        // motherId
+        if (dto.motherId() != null){
+            validate(dto.motherId());
+            try {
+                Horse mother = dao.getHorse(dto.motherId());
+                if (mother.getSex() != Sex.Female) throw new ValidationException("Provided Mother must be Female!");
+                if (mother.getDob().after(dto.dob())) throw new StateConflictException("Provided Mother must be older than horse!");
+            } catch (NotFoundException e) {
+                throw new ValidationException("Provided Mother with id '" + dto.motherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }

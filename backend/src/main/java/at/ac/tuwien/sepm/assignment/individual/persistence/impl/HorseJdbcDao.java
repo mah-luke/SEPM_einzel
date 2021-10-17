@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import org.slf4j.Logger;
@@ -28,18 +29,20 @@ public class HorseJdbcDao implements HorseDao {
     private final JdbcTemplate jdbcTemplate;
     private final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final FoodJdbcDao foodJdbcDao;
+    private final HorseMapper mapper;
 
     private static final String TABLE_NAME = "horse";
     private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-    private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME + " (NAME, DESCRIPTION, DOB, SEX, FOODID) VALUES ( ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, description = ?, dob = ?, sex = ?, foodid = ? WHERE id = ?";
+    private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME + " (NAME, DESCRIPTION, DOB, SEX, FOODID, FATHERID, MOTHERID) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET name = ?, description = ?, dob = ?, sex = ?, foodid = ?, fatherId = ?, motherId = ? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
 
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao, HorseMapper mapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.foodJdbcDao = foodJdbcDao;
+        this.mapper = mapper;
     }
 
     @Override
@@ -111,6 +114,8 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setDate(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
                 ps.setObject(5, dto.foodId(), Type.LONG);
+                ps.setObject(6, dto.fatherId(), Type.LONG);
+                ps.setObject(7, dto.motherId(), Type.LONG);
                 return ps;
             }, keyHolder);
 
@@ -133,7 +138,9 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setDate(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
                 ps.setObject(5, dto.foodId(), Type.LONG);
-                ps.setLong(6, id);
+                ps.setObject(6, dto.fatherId(), Type.LONG);
+                ps.setObject(7, dto.motherId(), Type.LONG);
+                ps.setLong(8, id);
                 return ps;
             }, keyHolder);
 
@@ -170,6 +177,12 @@ public class HorseJdbcDao implements HorseDao {
 
         Long foodId = (Long) result.getObject("foodId");
         horse.setFood(foodId == null? null : foodJdbcDao.getFood(foodId));
+
+        Long fatherId = (Long) result.getObject("fatherId");
+        horse.setFather(fatherId == null? null : mapper.entityToShallowEntity(getHorse(fatherId)));
+
+        Long motherId = (Long) result.getObject("motherId");
+        horse.setMother(motherId == null? null : mapper.entityToShallowEntity(getHorse(motherId)));
 
         return horse;
     }
