@@ -8,5 +8,7 @@ export class HorseData {
     public dob: Date,
     public sex: Sex,
     public foodId: number,
+    public fatherId: number,
+    public motherId: number
   ) {}
 }

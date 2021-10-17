@@ -16,7 +16,9 @@ export class HorseMapper {
       horse.description,
       horse.dob,
       horse.sex,
-      horse.food?.id
+      horse.food?.id,
+      horse.father?.id,
+      horse.mother?.id
     );
   }
   public horseToFormValues(horse: Horse): HorseFormValues {
@@ -28,7 +30,9 @@ export class HorseMapper {
       horse.description,
       horse.dob,
       horse.sex,
-      horse.food
+      horse.food,
+      horse.father,
+      horse.mother
     );
   }
 
@@ -41,7 +45,9 @@ export class HorseMapper {
       formValues.description,
       formValues.dob,
       formValues.sex,
-      formValues.food?.id
+      formValues.food?.id,
+      formValues.father?.id,
+      formValues.mother?.id
     );
 
   }

@@ -35,13 +35,7 @@ export class EditHorseComponent implements OnInit {
     console.log('submitted horse editing form', formValue);
     this.submitted = true;
     this.editHorse(
-      new HorseData(
-        formValue.name,
-        formValue.description,
-        formValue.dob,
-        formValue.sex,
-        formValue.food?.id
-      )
+      this.mapper.formValuesToHorseData(formValue)
     );
   }
 

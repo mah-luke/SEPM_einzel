@@ -5,9 +5,24 @@
       <tr><td>Description</td><td>{{model.description}}</td></tr>
       <tr><td>Date of Birth</td><td>{{model.dob}}</td></tr>
       <tr><td>Sex</td><td>{{model.sex}}</td></tr>
-      <tr *ngIf="model.food"><td>Favourite Food</td>
+      <tr><td>Favourite Food</td>
         <td *ngIf="model.food">{{model.food.name}}, {{model.food.calories}} kcal</td>
-        <td *ngIf="model.foodId">{{model.foodId}}</td></tr>
+        <td [hidden]="model.food"></td>
+      </tr>
+      <tr >
+        <td>Father</td>
+        <td *ngIf="model.father" class="hover" routerLink="/horses/{{model.father.id}}/details">
+          {{model.father.name}} (*{{model.father.dob}})
+        </td>
+        <td [hidden]="model.father"></td>
+      </tr>
+      <tr>
+        <td>Mother</td>
+        <td *ngIf="model.mother" class="hover" routerLink="/horses/{{model.mother.id}}/details">
+          {{model.mother.name}} (*{{model.mother.dob}})
+        </td>
+        <td [hidden]="model.mother"></td>
+      </tr>
     </tbody>
   </table>
   <br>

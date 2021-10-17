@@ -17,6 +17,7 @@ import { CreateFoodComponent } from './component/create-food/create-food.compone
 import { FoodComponent } from './component/food/food.component';
 import { ShowFoodComponent } from './component/show-food/show-food.component';
 import { SearchFoodComponent } from './component/search-food/search-food.component';
+import { SearchHorseComponent } from './component/search-horse/search-horse.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SearchFoodComponent } from './component/search-food/search-food.compone
     FoodComponent,
     ShowFoodComponent,
     SearchFoodComponent,
+    SearchHorseComponent,
   ],
     imports: [
         BrowserModule,

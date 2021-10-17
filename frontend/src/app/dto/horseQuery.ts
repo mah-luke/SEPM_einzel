@@ -7,6 +7,8 @@ export class HorseQuery {
     public dob?: Date,
     public sex?: Sex,
     public foodId?: number,
+    public fatherId?: number,
+    public motherId?: number,
     public limit?: number
   ) {
   }

@@ -40,7 +40,9 @@ export class HorseFormComponent implements OnInit, ControlValueAccessor, OnDestr
       description: [null],
       dob: [null, Validators.required],
       sex: [null, Validators.required],
-      food: [null]
+      food: [null],
+      father: [null],
+      mother: [null]
     });
 
     this.subscriptions.push(

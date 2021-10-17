@@ -32,4 +32,14 @@
     <label for="food">Favourite Food</label>
     <app-search-food id="food" formControlName="food"></app-search-food>
   </div>
+
+  <div class="form-group">
+    <label for="father">Father</label>
+    <app-search-horse id="father" formControlName="father" [query]="{sex: 'Male'}"></app-search-horse>
+  </div>
+
+  <div class="form-group">
+    <label for="mother">Mother</label>
+    <app-search-horse id="mother" formControlName="mother" [query]="{sex: 'Female'}"></app-search-horse>
+  </div>
 </div>

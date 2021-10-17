@@ -1,8 +1,7 @@
 import {Sex} from '../enums/sex';
 import {Food} from './food';
-import {ShallowHorse} from './ShallowHorse';
 
-export interface Horse {
+export interface ShallowHorse {
   id: number;
   name: string;
   description?: string;
@@ -11,4 +10,5 @@ export interface Horse {
   food?: Food;
   father?: ShallowHorse;
   mother?: ShallowHorse;
+
 }
