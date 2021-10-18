@@ -36,7 +36,7 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
             try {
                 foodDao.getFood(qParams.foodId());
             } catch (NotFoundException e) {
-                throw new ValidationException("Provided Food with id '" + qParams.foodId() + "' does not exist!", e);
+                throw new StateConflictException("Provided Food with id '" + qParams.foodId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
@@ -51,7 +51,7 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
 
     private String checkLength(String s){
         if (s != null && s.length() > MAX_LENGTH)
-            throw new IllegalArgumentException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
+            throw new ValidationException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
         return s;
     }
 }

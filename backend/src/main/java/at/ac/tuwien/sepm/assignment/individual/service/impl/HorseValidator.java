@@ -33,7 +33,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
     public HorseDataDto validate(HorseDataDto dto) throws ServiceException {
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Horses must be set!");
-        else if (dto.name().isBlank()) throw new IllegalArgumentException("Name must not be blank!");
+        else if (dto.name().isBlank()) throw new ValidationException("Name must not be blank!");
         checkLength(dto.name());
 
         // description
@@ -42,7 +42,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
         // dob
         if (dto.dob() == null) throw new IllegalArgumentException("Dob for Horses must be set!");
         else if (dto.dob().after(new Date(System.currentTimeMillis())))
-            throw new ValidationException("Dob must not be in the future!");
+            throw new StateConflictException("Dob must not be in the future!");
 
         // sex
         if (dto.sex() == null) throw new IllegalArgumentException("Sex for Horses must be set!");
@@ -53,7 +53,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
             try {
                 foodDao.getFood(dto.foodId());
             } catch (NotFoundException e) {
-                throw new ValidationException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
+                throw new StateConflictException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
@@ -67,7 +67,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                 if (father.getSex() != Sex.Male) throw new ValidationException("Provided Father must be Male!");
                 if (father.getDob().after(dto.dob())) throw new StateConflictException("Provided Father must be older than horse!");
             } catch (NotFoundException e) {
-                throw new ValidationException("Provided Father with id '" + dto.fatherId() + "' does not exist!", e);
+                throw new StateConflictException("Provided Father with id '" + dto.fatherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
@@ -81,7 +81,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                 if (mother.getSex() != Sex.Female) throw new ValidationException("Provided Mother must be Female!");
                 if (mother.getDob().after(dto.dob())) throw new StateConflictException("Provided Mother must be older than horse!");
             } catch (NotFoundException e) {
-                throw new ValidationException("Provided Mother with id '" + dto.motherId() + "' does not exist!", e);
+                throw new StateConflictException("Provided Mother with id '" + dto.motherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
@@ -91,13 +91,13 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
 
     @Override
     public long validate(long id) {
-        if (id < 1) throw new IllegalArgumentException("Id not positive: " + id);
+        if (id < 1) throw new ValidationException("Id not positive: " + id);
         return id;
     }
 
     private String checkLength(String s){
         if (s != null && s.length() > MAX_LENGTH)
-            throw new IllegalArgumentException("String '" + s + "' exceeds allowed limit of " + MAX_LENGTH + " chars!");
+            throw new ValidationException("String starting with '" + s.substring(0,20) + "' exceeds allowed limit of " + MAX_LENGTH + " chars!");
         return s;
     }
 }

@@ -14,8 +14,8 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
     @Override
     public FoodDataDto validate(FoodDataDto dto) throws ValidationException {
         // name
-        if (dto.name() == null) throw new IllegalArgumentException("Name for Food must be set!");
-        else if (dto.name().isBlank()) throw new IllegalArgumentException("Name must not be blank!");
+        if (dto.name() == null) throw new ValidationException("Name for Food must be set!");
+        else if (dto.name().isBlank()) throw new ValidationException("Name must not be blank!");
         checkLength(dto.name());
 
         // description
@@ -23,7 +23,7 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
 
         // calories
         if (dto.calories() != null && dto.calories() < 0)
-            throw new IllegalArgumentException("Given calories must not be below zero!");
+            throw new ValidationException("Given calories must not be below zero!");
 
         return dto;
     }
@@ -33,11 +33,9 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
         return id;
     }
 
-
-
     private String checkLength(String s){
         if (s != null && s.length() > MAX_LENGTH)
-            throw new IllegalArgumentException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
+            throw new ValidationException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
         return s;
     }
 }

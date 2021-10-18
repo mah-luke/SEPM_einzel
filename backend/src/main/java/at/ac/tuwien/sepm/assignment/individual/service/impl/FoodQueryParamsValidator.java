@@ -22,7 +22,7 @@ public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
 
         // calories
         if (qParams.calories() != null && qParams.calories() < 0)
-            throw new IllegalArgumentException("Given calories must not be below zero!");
+            throw new ValidationException("Given calories must not be below zero!");
 
         // limit
         if (qParams.limit() != null && qParams.limit() < 1)
@@ -33,7 +33,7 @@ public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
 
     private String checkLength(String s){
         if (s != null && s.length() > MAX_LENGTH)
-            throw new IllegalArgumentException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
+            throw new ValidationException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
         return s;
     }
 }
