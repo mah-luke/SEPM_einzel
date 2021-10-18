@@ -112,7 +112,7 @@ public class FoodJdbcDao implements FoodDao {
         food.setId(result.getLong("id"));
         food.setName(result.getString("name"));
         food.setDescription(result.getString("description"));
-        food.setCalories((Double) result.getObject("calories"));
+        food.setCalories(result.getObject("calories", Double.class));
 
         return food;
     }

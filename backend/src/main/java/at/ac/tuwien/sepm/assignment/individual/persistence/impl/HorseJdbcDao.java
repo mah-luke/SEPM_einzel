@@ -179,10 +179,10 @@ public class HorseJdbcDao implements HorseDao {
         Long foodId = (Long) result.getObject("foodId");
         horse.setFood(foodId == null? null : foodJdbcDao.getFood(foodId));
 
-        Long fatherId = (Long) result.getObject("fatherId");
+        Long fatherId = result.getObject("fatherId", Long.class);
         horse.setFather(fatherId == null? null : mapper.entityToShallowEntity(getHorse(fatherId)));
 
-        Long motherId = (Long) result.getObject("motherId");
+        Long motherId = result.getObject("motherId", Long.class);
         horse.setMother(motherId == null? null : mapper.entityToShallowEntity(getHorse(motherId)));
 
         return horse;
