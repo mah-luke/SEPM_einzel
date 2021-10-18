@@ -4,9 +4,9 @@ import aj.org.objectweb.asm.Type;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.entity.ShallowHorse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import org.slf4j.Logger;
@@ -30,7 +30,6 @@ public class HorseJdbcDao implements HorseDao {
     private final JdbcTemplate jdbcTemplate;
     private final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final FoodJdbcDao foodJdbcDao;
-    private final HorseMapper mapper;
 
     private static final String TABLE_NAME = "horse";
     private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
@@ -40,10 +39,9 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
 
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao, HorseMapper mapper) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.foodJdbcDao = foodJdbcDao;
-        this.mapper = mapper;
     }
 
     @Override
@@ -95,6 +93,22 @@ public class HorseJdbcDao implements HorseDao {
                 ps.setLong(1, id);
                 return ps;
             }, this::mapRow);
+
+            if (result.size() == 1) return result.get(0);
+            else if (result.size() == 0) throw new NotFoundException("Horse with id '" + id + "' not found in database");
+            else throw new PersistenceException("Getting by id returned multiple values for id " + id);
+        } catch (DataAccessException e) {
+            throw new PersistenceException("Could not retrieve horse with id '" + id + "' from the database", e);
+        }
+    }
+
+    private ShallowHorse getShallowHorse(long id) {
+        try {
+            List<ShallowHorse> result = jdbcTemplate.query(con -> {
+                PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
+                ps.setLong(1, id);
+                return ps;
+            }, this::mapRowShallow);
 
             if (result.size() == 1) return result.get(0);
             else if (result.size() == 0) throw new NotFoundException("Horse with id '" + id + "' not found in database");
@@ -180,11 +194,21 @@ public class HorseJdbcDao implements HorseDao {
         horse.setFood(foodId == null? null : foodJdbcDao.getFood(foodId));
 
         Long fatherId = result.getObject("fatherId", Long.class);
-        horse.setFather(fatherId == null? null : mapper.entityToShallowEntity(getHorse(fatherId)));
+        horse.setFather(fatherId == null? null : getShallowHorse(fatherId));
 
         Long motherId = result.getObject("motherId", Long.class);
-        horse.setMother(motherId == null? null : mapper.entityToShallowEntity(getHorse(motherId)));
+        horse.setMother(motherId == null? null : getShallowHorse(motherId));
 
         return horse;
+    }
+
+    private ShallowHorse mapRowShallow(ResultSet result, int rownum) throws SQLException {
+        return new ShallowHorse(
+            result.getLong("id"),
+            result.getString("name"),
+            result.getString("description"),
+            result.getObject("dob", LocalDate.class),
+            Sex.valueOf(result.getString("sex"))
+        );
     }
 }
