@@ -38,8 +38,7 @@ public class HorseMapper {
                 horse.getName(),
                 horse.getDescription(),
                 horse.getDob(),
-                horse.getSex(),
-                foodMapper.entityToDto(horse.getFood())
+                horse.getSex()
         );
     }
 

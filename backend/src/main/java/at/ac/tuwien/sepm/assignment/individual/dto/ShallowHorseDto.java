@@ -8,6 +8,6 @@ import java.time.LocalDate;
  * Class for Horse DTOs
  * Does not contain parents.
  */
-public record ShallowHorseDto(long id, String name, String description, LocalDate dob, Sex sex, FoodDto food) {
+public record ShallowHorseDto(long id, String name, String description, LocalDate dob, Sex sex) {
 
 }
