@@ -1,18 +1,18 @@
 <div [formGroup]="form">
   <div class="form-group">
-    <div style="display: flex">
-      <table class="table border" *ngIf="value" (click)="unselect()">
+    <div class="selected">
+      <table class="table border" *ngIf="value" (click)="select(null)">
         <tbody>
-        <tr><td>{{selected.name}}</td><td>{{selected.description}}</td><td>{{selected.dob}}</td></tr>
+        <tr><td>{{value.name}}</td><td>{{value.description}}</td><td>{{value.dob}}</td></tr>
         </tbody>
       </table>
-      <input (keyup)="onSubmit()" *ngIf="!value" (focus)="onSubmit()" type="text" class="form-control"
+      <input *ngIf="!value" type="text" (focus)="selecting=true" class="form-control"
              formControlName="name" id="name" autocomplete="off">
       <button style="align-self: center" type="button" (click)="reset()" class="btn btn-close"></button>
     </div>
-    <table class="table table-hover border" *ngIf="!value">
+    <table class="table table-hover border" *ngIf="!value && selecting">
       <tbody>
-      <tr *ngFor="let horse of searchResult" (click)="select(horse)">
+      <tr *ngFor="let horse of searchResult" (click)="select(horse); selecting=false">
         <td>{{horse.name}}</td><td>{{horse.description}}</td><td>{{horse.dob}}</td>
       </tr>
       </tbody>

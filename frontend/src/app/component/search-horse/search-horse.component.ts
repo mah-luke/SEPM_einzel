@@ -8,7 +8,7 @@ import {
 import {HorseQuery} from '../../dto/horseQuery';
 import {HorseService} from '../../service/horse.service';
 import {Horse} from '../../dto/horse';
-import {HorseMapper} from '../../mapper/horse-mapper';
+import {debounceTime, distinctUntilChanged} from 'rxjs';
 
 @Component({
   selector: 'app-search-horse',
@@ -31,20 +31,30 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
 
   @Input() set query(value) {
     this.form.patchValue(value);
-    console.log(this.form.value);
   };
   form: FormGroup;
-  selected: Horse;
   searchResult: Array<Horse>;
+  emptySearchResult: Array<Horse>;
+  selecting = false;
+  private selected: Horse;
 
 
-  constructor(private formBuilder: FormBuilder, private service: HorseService, private mapper: HorseMapper) {
+  constructor(private formBuilder: FormBuilder, private service: HorseService) {
     this.form = this.formBuilder.group({
       name: [null],
-      description: [null],
-      dob: [null],
       sex: [null],
-      food: [null]
+    });
+
+    this.form.get('name').valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe( res => {
+      if (this.form.get('name').value){
+        this.fetchHorses();
+      }
+      else {
+        this.searchResult = this.emptySearchResult;
+      }
     });
   }
 
@@ -58,21 +68,19 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
     this.onTouched();
   }
 
-  onChange: any = () => {};
-
-  onTouched: any = () => {};
 
   fetchHorses() {
-    console.log(this.form.value);
-    const query: HorseQuery = this.mapper.formValuesToHorseData(this.form.value);
+    console.log('Fetching horses via horseQuery: ', this.form.value);
+    const query: HorseQuery = this.form.value;
     query.limit = 5;
-
-    console.log('Querying...:', query);
 
     this.service.getAll(query).subscribe({
       next: data => {
         console.log('received horses', data);
         this.searchResult = data;
+        if(!query.name){
+          this.emptySearchResult = data;
+        }
       },
       error: error => {
         console.error('Error fetching horses', error.message);
@@ -80,13 +88,24 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  onSubmit() {
-    console.log('submit: ', this.form.value);
-    this.fetchHorses();
+  reset() {
+    this.form.get('name').reset();
+    this.value=null;
+    this.selecting = false;
+  }
+
+  select(horse: Horse) {
+    console.log('selected: ', horse);
+    this.value = horse;
   }
 
   ngOnInit(): void {
+    this.fetchHorses();
   }
+
+  onChange: any = () => {};
+
+  onTouched: any = () => {};
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -104,23 +123,6 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
     if (value === null) {
       this.reset();
     }
-  }
-
-  reset() {
-    this.searchResult = null;
-    this.select(null);
-    this.form.get('name').reset();
-  }
-
-  select(horse: Horse) {
-    console.log('selected: ', horse);
-    this.value = horse;
-    this.onChange(horse);
-    this.onTouched();
-  }
-
-  unselect() {
-    this.value = null;
   }
 
   validate(_: FormControl) {
