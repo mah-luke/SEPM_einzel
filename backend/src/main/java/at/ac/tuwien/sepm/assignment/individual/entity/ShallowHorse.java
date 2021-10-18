@@ -3,16 +3,17 @@ package at.ac.tuwien.sepm.assignment.individual.entity;
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class ShallowHorse {
     private long id;
     private String name;
     private String description;
-    private Date dob;
+    private LocalDate dob;
     private Sex sex;
     private Food food;
 
-    public ShallowHorse(long id, String name, String description, Date dob, Sex sex, Food food) {
+    public ShallowHorse(long id, String name, String description, LocalDate dob, Sex sex, Food food) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,7 +34,7 @@ public class ShallowHorse {
         return description;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 

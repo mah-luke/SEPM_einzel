@@ -2,12 +2,13 @@ package at.ac.tuwien.sepm.assignment.individual.entity;
 
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Horse {
     private long id;
     private String name;
     private String description;
-    private Date dob;
+    private LocalDate dob;
     private Sex sex;
     private Food food;
     private ShallowHorse father;
@@ -37,11 +38,11 @@ public class Horse {
         this.description = description;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

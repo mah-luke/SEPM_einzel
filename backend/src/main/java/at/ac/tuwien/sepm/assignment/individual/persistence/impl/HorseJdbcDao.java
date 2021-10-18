@@ -21,6 +21,7 @@ import java.lang.invoke.MethodHandles;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class HorseJdbcDao implements HorseDao {
                 if (qParams.description() != null)
                     ps.setString(++counter, "%" + qParams.description().toUpperCase() + "%");
                 if (qParams.dob() != null)
-                    ps.setDate(++counter, qParams.dob());
+                    ps.setObject(++counter, qParams.dob());
                 if (qParams.sex() != null)
                     ps.setString(++counter, qParams.sex().toString().toUpperCase());
                 if (qParams.foodId() != null)
@@ -111,7 +112,7 @@ public class HorseJdbcDao implements HorseDao {
                 PreparedStatement ps = con.prepareStatement(SQL_CREATE, new String[] {"ID"});
                 ps.setString(1, dto.name());
                 ps.setString(2, dto.description());
-                ps.setDate(3, dto.dob());
+                ps.setObject(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
                 ps.setObject(5, dto.foodId(), Type.LONG);
                 ps.setObject(6, dto.fatherId(), Type.LONG);
@@ -135,7 +136,7 @@ public class HorseJdbcDao implements HorseDao {
                 PreparedStatement ps = con.prepareStatement(SQL_UPDATE, new String[] {"ID"});
                 ps.setString(1, dto.name());
                 ps.setString(2, dto.description());
-                ps.setDate(3, dto.dob());
+                ps.setObject(3, dto.dob());
                 ps.setString(4, dto.sex().toString());
                 ps.setObject(5, dto.foodId(), Type.LONG);
                 ps.setObject(6, dto.fatherId(), Type.LONG);
@@ -172,7 +173,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setId(result.getLong("id"));
         horse.setName(result.getString("name"));
         horse.setDescription(result.getString("description"));
-        horse.setDob(result.getDate("dob"));
+        horse.setDob(result.getObject("dob", LocalDate.class));
         horse.setSex(Sex.valueOf(result.getString("sex")));
 
         Long foodId = (Long) result.getObject("foodId");

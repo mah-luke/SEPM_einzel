@@ -10,7 +10,7 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import org.springframework.stereotype.Component;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Component
 public class HorseValidator implements ModelValidator<HorseDataDto> {
@@ -41,7 +41,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
 
         // dob
         if (dto.dob() == null) throw new IllegalArgumentException("Dob for Horses must be set!");
-        else if (dto.dob().after(new Date(System.currentTimeMillis())))
+        else if (dto.dob().isAfter(LocalDate.now()))
             throw new StateConflictException("Dob must not be in the future!");
 
         // sex
@@ -65,7 +65,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
             try {
                 Horse father = dao.getHorse(dto.fatherId());
                 if (father.getSex() != Sex.Male) throw new ValidationException("Provided Father must be Male!");
-                if (father.getDob().after(dto.dob())) throw new StateConflictException("Provided Father must be older than horse!");
+                if (!father.getDob().isBefore(dto.dob())) throw new StateConflictException("Provided Father must be older than horse!");
             } catch (NotFoundException e) {
                 throw new StateConflictException("Provided Father with id '" + dto.fatherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
@@ -79,7 +79,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
             try {
                 Horse mother = dao.getHorse(dto.motherId());
                 if (mother.getSex() != Sex.Female) throw new ValidationException("Provided Mother must be Female!");
-                if (mother.getDob().after(dto.dob())) throw new StateConflictException("Provided Mother must be older than horse!");
+                if (!mother.getDob().isBefore(dto.dob())) throw new StateConflictException("Provided Mother must be older than horse!");
             } catch (NotFoundException e) {
                 throw new StateConflictException("Provided Mother with id '" + dto.motherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
