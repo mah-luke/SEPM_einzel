@@ -18,7 +18,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
     private final FoodDao foodDao;
     private final HorseDao dao;
     private final ModelValidator<FoodDataDto> foodValidator;
-    private final static int MAX_LENGTH = 256;
+    private final static int MAX_LENGTH = 255;
 
     HorseValidator(FoodDao foodDao, HorseDao dao, ModelValidator<FoodDataDto> foodValidator) {
         this.foodDao = foodDao;

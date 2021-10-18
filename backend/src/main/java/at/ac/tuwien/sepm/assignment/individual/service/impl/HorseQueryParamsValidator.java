@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto> {
 
-    static int MAX_LENGTH = 256;
+    static int MAX_LENGTH = 255;
     private final ModelValidator<FoodDataDto> foodValidator;
     private final FoodDao foodDao;
 

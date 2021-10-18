@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FoodValidator  implements ModelValidator<FoodDataDto> {
 
-    static int MAX_LENGTH = 256;
+    static int MAX_LENGTH = 255;
 
     @Override
     public FoodDataDto validate(FoodDataDto dto) throws ValidationException {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
 
-    static int MAX_LENGTH = 256;
+    static int MAX_LENGTH = 255;
 
     @Override
     public FoodQueryParamsDto validate(FoodQueryParamsDto qParams) {
