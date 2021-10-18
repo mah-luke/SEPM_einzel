@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-show-error',
@@ -7,7 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class ShowErrorComponent implements OnInit {
 
-  @Input() error;
+  @Input() error: HttpErrorResponse;
   @Output() errorChange = new EventEmitter();
 
   constructor() { }
