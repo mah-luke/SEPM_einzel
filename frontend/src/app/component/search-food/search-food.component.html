@@ -1,18 +1,18 @@
 <div [formGroup]="form">
   <div class="form-group">
-    <div style="display: flex">
-      <table class="table border" *ngIf="selected" (click)="unselect()">
+    <div class="selected">
+      <table class="table border" *ngIf="value" (click)="select(null)">
         <tbody>
           <tr><td>{{selected.name}}</td><td>{{selected.description}}</td><td>{{selected.calories}}</td></tr>
         </tbody>
       </table>
-      <input (keyup)="onSubmit()" *ngIf="!selected" type="text" class="form-control"
+      <input *ngIf="!value" type="text" (focus)="selecting=true" class="form-control"
              formControlName="name" id="name" autocomplete="off">
       <button style="align-self: center" type="button" (click)="reset()" class="btn btn-close"></button>
     </div>
-    <table class="table table-hover border" *ngIf="!selected && searchResult">
+    <table class="table table-hover border" *ngIf="!value && selecting">
       <tbody>
-        <tr *ngFor="let food of searchResult.slice(0,5)" (click)="select(food)">
+        <tr *ngFor="let food of searchResult" (click)="select(food); selecting=false">
           <td>{{food.name}}</td><td>{{food.description}}</td><td>{{food.calories}}</td>
         </tr>
       </tbody>

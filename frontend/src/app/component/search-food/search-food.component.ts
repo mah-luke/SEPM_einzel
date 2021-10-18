@@ -1,8 +1,16 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR,} from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import {FoodService} from '../../service/food.service';
 import {Food} from '../../dto/food';
 import {FoodQuery} from '../../dto/foodQuery';
+import {debounceTime, distinctUntilChanged} from 'rxjs';
 
 @Component({
   selector: 'app-search-food',
@@ -24,10 +32,9 @@ import {FoodQuery} from '../../dto/foodQuery';
 export class SearchFoodComponent implements OnInit, ControlValueAccessor {
   selected: Food;
   searchResult: Array<Food>;
-
-  form = new FormGroup({
-    name: new FormControl(null)
-  });
+  emptySearchResult: Array<Food>;
+  form: FormGroup;
+  selecting = false;
 
   get value(): Food {
     return this.selected;
@@ -39,7 +46,22 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
     this.onTouched();
   }
 
-  constructor(private service: FoodService) {
+  constructor(private service: FoodService, private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      name: [null]
+    });
+
+    this.form.get('name').valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe( res => {
+      if (this.form.get('name').value){
+        this.fetchFood();
+      }
+      else {
+        this.searchResult = this.emptySearchResult;
+      }
+    });
   }
 
   onChange: any = () => {};
@@ -52,7 +74,6 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
         }
 
         if (value === null) {
-          this.form.reset();
           this.reset();
         }
     }
@@ -70,15 +91,21 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
     }
 
   ngOnInit(): void {
+    this.fetchFood();
   }
 
   fetchFood(): void {
-    const val = new FoodQuery(this.form.get('name').value, null, null, 5);
+    console.log('Fetching food via FoodQuery: ', this.form.value);
+    const query: FoodQuery = this.form.value;
+    query.limit = 5;
 
-    this.service.getAll(val).subscribe({
+    this.service.getAll(query).subscribe({
       next: data => {
         console.log('recieved query: ', data);
         this.searchResult = data;
+        if(!query.name){
+          this.emptySearchResult = data;
+        }
       },
       error: error => {
         console.error('Error fetching search result', error.message);
@@ -86,25 +113,14 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  onSubmit() {
-    console.log('submit: ', this.form.value);
-    this.fetchFood();
-  }
-
   select(food: Food) {
     console.log('selected: ', food);
-    this.selected = food;
-    this.onChange(food);
-    this.onTouched();
-  }
-
-  unselect() {
-    this.selected = null;
+    this.value = food;
   }
 
   reset() {
-    this.searchResult=null;
-    this.select(null);
-    this.form.patchValue({name: null});
+    this.form.get('name').reset();
+    this.value=null;
+    this.selecting=false;
   }
 }
