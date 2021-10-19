@@ -1,4 +1,8 @@
 # YOU MUST USE AN IN-MEMORY DATABASE
+logging:
+  level:
+    at.ac.tuwien.sepm.assignment.individual: TRACE
+    root: INFO
 spring:
   datasource:
     url: "jdbc:h2:mem:testdb;INIT=RUNSCRIPT FROM 'classpath:sql/createSchema.sql'"
