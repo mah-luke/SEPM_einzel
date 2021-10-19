@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.assignment.individual.mapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.ShallowHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.entity.ShallowHorse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,12 +24,12 @@ public class HorseMapper {
                 horse.getDob(),
                 horse.getSex(),
                 foodMapper.entityToDto(horse.getFood()),
-                entityToDto(horse.getFather()),
-                entityToDto(horse.getMother())
+                entityToShallowDto(horse.getFather()),
+                entityToShallowDto(horse.getMother())
         );
     }
 
-    public ShallowHorseDto entityToDto(ShallowHorse horse) {
+    public ShallowHorseDto entityToShallowDto(Horse horse) {
         if (horse == null) return null;
 
         return new ShallowHorseDto(

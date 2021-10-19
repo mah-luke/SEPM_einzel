@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import java.time.LocalDate;
 import java.util.Objects;
 
+// ASK: entity params ok?
 public class Horse {
     private long id;
     private String name;
@@ -11,8 +12,8 @@ public class Horse {
     private LocalDate dob;
     private Sex sex;
     private Food food;
-    private ShallowHorse father;
-    private ShallowHorse mother;
+    private Horse father;
+    private Horse mother;
 
     public long getId() {
         return id;
@@ -62,19 +63,19 @@ public class Horse {
         this.food = food;
     }
 
-    public ShallowHorse getFather() {
+    public Horse getFather() {
         return father;
     }
 
-    public void setFather(ShallowHorse father) {
+    public void setFather(Horse father) {
         this.father = father;
     }
 
-    public ShallowHorse getMother() {
+    public Horse getMother() {
         return mother;
     }
 
-    public void setMother(ShallowHorse mother) {
+    public void setMother(Horse mother) {
         this.mother = mother;
     }
 
