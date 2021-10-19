@@ -1,8 +1,8 @@
 package at.ac.tuwien.sepm.assignment.individual.entity;
 
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Horse {
     private long id;
@@ -76,5 +76,18 @@ public class Horse {
 
     public void setMother(ShallowHorse mother) {
         this.mother = mother;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Horse horse = (Horse) o;
+        return id == horse.id && name.equals(horse.name) && Objects.equals(description, horse.description) && dob.equals(horse.dob) && sex == horse.sex && Objects.equals(food, horse.food) && Objects.equals(father, horse.father) && Objects.equals(mother, horse.mother);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, dob, sex, food, father, mother);
     }
 }
