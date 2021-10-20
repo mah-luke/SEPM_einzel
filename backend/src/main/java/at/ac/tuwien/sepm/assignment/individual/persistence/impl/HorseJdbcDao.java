@@ -50,7 +50,7 @@ public class HorseJdbcDao implements HorseDao {
 
         if (qParams.name() != null) queries.add("UPPER(name) LIKE ?");
         if (qParams.description() != null) queries.add("UPPER(description) LIKE ?");
-        if (qParams.dob() != null) queries.add(("dob <= ?"));
+        if (qParams.dob() != null) queries.add(("dob < ?"));
         if (qParams.sex() != null) queries.add( "UPPER(sex) = ?");
         if (qParams.foodId() != null) queries.add("foodId = ?");
         if (qParams.fatherId() != null) queries.add("fatherId = ?");
