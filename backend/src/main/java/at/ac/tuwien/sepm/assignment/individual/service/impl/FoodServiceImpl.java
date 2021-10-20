@@ -28,7 +28,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public List<Food> allFood(FoodQueryParamsDto qparams) throws ServiceException {
-        qparams = queryValidator.validate(qparams);
+        queryValidator.validate(qparams);
         try {
             return dao.getAll(qparams);
         } catch (PersistenceException e) {
@@ -38,7 +38,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Food getFood(long id) throws ServiceException {
-        id = validator.validate(id);
+        validator.validate(id);
         try {
             return dao.getFood(id);
         } catch (PersistenceException e) {
@@ -48,7 +48,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Food createFood(FoodDataDto dto) throws ServiceException {
-        dto = validator.validate(dto);
+        validator.validate(dto);
         try {
             return dao.createFood(dto);
         } catch (PersistenceException e) {

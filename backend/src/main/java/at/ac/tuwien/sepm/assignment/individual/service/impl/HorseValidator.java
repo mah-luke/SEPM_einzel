@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import at.ac.tuwien.sepm.assignment.individual.exception.*;
@@ -11,6 +12,7 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class HorseValidator implements ModelValidator<HorseDataDto> {
@@ -26,11 +28,62 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
         this.foodValidator = foodValidator;
     }
 
-    // ASK: validator as service class valid?
-    //      when IllegalArgument / Validation / StateConflict
+    @Override
+    public void validate(HorseDataDto dto, long id) throws ServiceException {
+
+        validate(id);
+
+        validate(dto);
+
+        try {
+            // get horse
+            Horse old = dao.getHorse(id);
+
+            // children
+            List<Horse> children = dao.getAll(
+                    new HorseQueryParamsDto(
+                            null,
+                            null,
+                            dto.dob().minusDays(1),
+                            null,
+                            null,
+                            old.getSex() == Sex.Male ? id : null,
+                            old.getSex() == Sex.Female ? id : null,
+                            null)
+            );
+
+            if (!children.isEmpty()) {
+                if (old.getSex() != dto.sex())
+                    throw new StateConflictException("Horse must not change its sex when it has children!");
+
+                Horse oldest = children.get(0);
+                for (Horse child : children) {
+                    if (child.getDob().isBefore(oldest.getDob())) oldest = child;
+                }
+                if (!oldest.getDob().isAfter(dto.dob())) throw new StateConflictException(
+                        "Children must always be younger than their parents!\n" +
+                                " This horse must have an Date of Birth before " + oldest.getDob().toString() +
+                                " (Date of Birth of youngest child)!"
+                );
+            }
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+
+    }
 
     @Override
-    public HorseDataDto validate(HorseDataDto dto) throws ServiceException {
+    public void validate(long id) {
+        if (id == 0) throw new ValidationException("Id must not be 0!");
+    }
+
+    private void checkLength(String s){
+        if (s != null && s.length() > MAX_LENGTH)
+            throw new ValidationException("String starting with '" + s.substring(0,20) + "' exceeds allowed limit of " + MAX_LENGTH + " chars!");
+    }
+
+    @Override
+    public void validate(HorseDataDto dto) throws ServiceException {
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Horses must be set!");
         else if (dto.name().isBlank()) throw new ValidationException("Name must not be blank!");
@@ -42,7 +95,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
         // dob
         if (dto.dob() == null) throw new IllegalArgumentException("Dob for Horses must be set!");
         else if (dto.dob().isAfter(LocalDate.now()))
-            throw new StateConflictException("Dob must not be in the future!");
+            throw new ValidationException("Dob must not be in the future!");
 
         // sex
         if (dto.sex() == null) throw new IllegalArgumentException("Sex for Horses must be set!");
@@ -53,7 +106,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
             try {
                 foodDao.getFood(dto.foodId());
             } catch (NotFoundException e) {
-                throw new StateConflictException("Provided Food with id '" + dto.foodId() + "' does not exist!", e); // ASK: check if handling is valid
+                throw new StateConflictException("Provided Food with id '" + dto.foodId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
@@ -86,18 +139,5 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                 throw new ServiceException(e.getMessage(), e);
             }
         }
-        return dto;
-    }
-
-    @Override
-    public long validate(long id) {
-        if (id < 1) throw new ValidationException("Id not positive: " + id);
-        return id;
-    }
-
-    private String checkLength(String s){
-        if (s != null && s.length() > MAX_LENGTH)
-            throw new ValidationException("String starting with '" + s.substring(0,20) + "' exceeds allowed limit of " + MAX_LENGTH + " chars!");
-        return s;
     }
 }

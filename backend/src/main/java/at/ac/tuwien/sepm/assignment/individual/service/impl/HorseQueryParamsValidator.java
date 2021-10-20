@@ -27,13 +27,13 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
     }
 
     @Override
-    public HorseQueryParamsDto validate(HorseQueryParamsDto qParams) throws ServiceException {
+    public void validate(HorseQueryParamsDto qParams) throws ServiceException {
 
         // name
-        if (qParams.name() != null) checkLength(qParams.name());
+        checkLength(qParams.name());
 
         // description
-        if (qParams.description() != null) checkLength(qParams.description());
+        checkLength(qParams.description());
 
         // foodId
         if (qParams.foodId() != null) {
@@ -74,13 +74,10 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
         // limit
         if (qParams.limit() != null && qParams.limit() < 1)
             throw new ValidationException("Limit of values must be positive");
-
-        return qParams;
     }
 
-    private String checkLength(String s){
+    private void checkLength(String s){
         if (s != null && s.length() > MAX_LENGTH)
             throw new ValidationException("String " + s + "exceeds allowed limit of " + MAX_LENGTH + " chars!");
-        return s;
     }
 }

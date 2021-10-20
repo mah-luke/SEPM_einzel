@@ -27,7 +27,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public List<Horse> allHorses(HorseQueryParamsDto qParams) throws ServiceException {
-        qParams = queryParamsValidator.validate(qParams);
+        queryParamsValidator.validate(qParams);
         try {
             return dao.getAll(qParams);
         } catch (PersistenceException e) {
@@ -37,7 +37,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse createHorse(HorseDataDto dto) throws ServiceException {
-        dto = validator.validate(dto);
+        validator.validate(dto);
         try {
             return dao.createHorse(dto);
         } catch (PersistenceException e) {
@@ -47,8 +47,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse editHorse(long id, HorseDataDto dto) throws ServiceException {
-        validator.validate(id);
-        dto = validator.validate(dto);
+        validator.validate(dto, id);
         try {
             return dao.editHorse(id, dto);
         } catch (PersistenceException e) {
@@ -58,7 +57,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse deleteHorse(long id) throws ServiceException {
-        id = validator.validate(id);
+        validator.validate(id);
         try {
             return dao.deleteHorse(id);
         } catch (PersistenceException e) {
@@ -68,7 +67,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse getHorse(long id) throws ServiceException {
-        id = validator.validate(id);
+        validator.validate(id);
         try {
             return dao.getHorse(id);
         } catch (PersistenceException e) {

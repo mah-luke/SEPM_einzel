@@ -1,17 +1,28 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
+import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.StateConflictException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 
-import java.util.Map;
-
+/**
+ * A Validator that validates objects of <Type> that may or may not be saved in the system.
+ *
+ * @param <Type> the type of the object to validate.
+ */
 public interface Validator<Type> {
 
     /**
-     * Validates a Type Object and returns its validated version
+     * Validates an Object of <Type> that has not been persisted in the system.
      *
-     * @return the validated obj if valid
+     * @throws ServiceException if an unexpected exception is thrown by the layer below.
+     * @throws IllegalArgumentException if the syntax of obj is not valid.
+     * @throws ValidationException if the semantics of obj is not valid.
+     * @throws StateConflictException if the state of the system conflicts with obj.
+     *
+     * @param obj the object to validate.
      */
-    Type validate(Type obj) throws ServiceException;
+    void validate(Type obj) throws ServiceException;
 
 
 }
