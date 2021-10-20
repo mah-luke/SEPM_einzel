@@ -6,13 +6,13 @@ import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.exception.RestException;
 import at.ac.tuwien.sepm.assignment.individual.rest.HorseEndpoint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 
 public abstract class HorseRestTestBase {
@@ -26,7 +26,7 @@ public abstract class HorseRestTestBase {
 
     @Test
     @DisplayName("Creating of valid horse returns new dto with same values as passed")
-    public void creating_of_valid_horse() {
+    public void creating_of_valid_horse() throws RestException {
         HorseDataDto req = TestData.getValidHorseComplex();
 
         HorseDto res = horseEndpoint.createHorse(req);
@@ -46,7 +46,7 @@ public abstract class HorseRestTestBase {
 
     @Test
     @DisplayName("after deletion of only horse database empty -> no exception")
-    public void db_empty_after_deletion_of_only_horse() {
+    public void db_empty_after_deletion_of_only_horse() throws RestException {
         Horse req = testSetup.addHorseToDatabase(TestData.getValidHorseComplex());
 
         horseEndpoint.deleteHorse(req.getId());
@@ -57,12 +57,7 @@ public abstract class HorseRestTestBase {
     @Test
     @DisplayName("Deletion of not existing horse throws NotFoundStatus")
     public void deletion_of_not_existing_throws_NotFoundStatus() {
-        try {
-            horseEndpoint.deleteHorse(1);
-            Assertions.fail("ResponseStatusException should have been thrown already!");
-        } catch (ResponseStatusException e) {
-            assert e.getStatus() == HttpStatus.NOT_FOUND;
-        }
+        Assertions.assertThrows(NotFoundException.class, () -> horseEndpoint.deleteHorse(1));
     }
 
 

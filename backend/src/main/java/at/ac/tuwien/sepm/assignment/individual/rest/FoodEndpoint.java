@@ -3,7 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.rest;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodQueryParamsDto;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.exception.RestException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.mapper.FoodMapper;
 import at.ac.tuwien.sepm.assignment.individual.service.FoodService;
@@ -33,48 +33,34 @@ public class FoodEndpoint {
     // ASK: correct way of query params mapping???
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Stream<FoodDto> allFood(FoodQueryParamsDto qparams) {
+    public Stream<FoodDto> allFood(FoodQueryParamsDto qparams) throws RestException {
         LOGGER.info("GET {}: {}", BASE_PATH, qparams.toString());
         try {
             return service.allFood(qparams).stream().map(mapper::entityToDto);
         } catch (ServiceException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        } catch (NotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw new RestException(e.getMessage(), e);
         }
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FoodDto getFood(@PathVariable long id) {
+    public FoodDto getFood(@PathVariable long id) throws RestException {
         LOGGER.info("GET {}/{}:", BASE_PATH, id);
         try {
             return mapper.entityToDto(service.getFood(id));
         } catch (ServiceException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        } catch (NotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw new RestException(e.getMessage(), e);
         }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FoodDto createFood(@RequestBody FoodDataDto dto) {
+    public FoodDto createFood(@RequestBody FoodDataDto dto) throws RestException {
         LOGGER.info("POST {}: {}", BASE_PATH, dto);
         try {
             return mapper.entityToDto(service.createFood(dto));
         } catch (ServiceException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        } catch (NotFoundException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw new RestException(e.getMessage(), e);
         }
     }
-
-
 }
