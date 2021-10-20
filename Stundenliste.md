@@ -19,3 +19,9 @@ Datum   | Dauer | Story | Anmerkungen
 09.10   | 4h    | 2     | fe / be
 10.10   | 7h    | 1/8/9 | fe / be
 11.10   | 4h    |2/7/8/9| fe / be
+13.10   | 6h    | 7     | fe
+15.10   | 8h    |1/2/7/8| fe / be
+16.10   | 5h    | 7     | fe / be
+17.10   | 5h    | 7     | fe / be
+18.10   | 8h    | 26    | fe / be
+19.10   | 4h    | 7     | fe / be
