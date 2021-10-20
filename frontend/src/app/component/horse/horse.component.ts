@@ -6,6 +6,8 @@ import {StringMap} from '@angular/compiler/src/compiler_facade_interface';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Sex} from '../../enums/sex';
 import {HorseQuery} from '../../dto/horseQuery';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HorseMapper} from '../../mapper/horse-mapper';
 
 @Component({
   selector: 'app-horse',
@@ -28,22 +30,42 @@ export class HorseComponent implements OnInit {
 
   constructor(
     private service: HorseService,
-  ) { }
-
-  ngOnInit(): void {
+    private route: ActivatedRoute,
+    private router: Router,
+    private mapper: HorseMapper
+  ) {
+    this.form.patchValue(this.route.queryParams.subscribe(params =>{
+        console.log('Parameters: ', params);
+        this.form.patchValue(params);
+      }
+    ));
     this.reloadHorses();
   }
 
+  ngOnInit(): void {
+  }
+
   reloadHorses() {
-    const query = new HorseQuery(
-      this.form.get('name').value,
-      null,
-      this.form.get('dob').value,
-      this.form.get('sex').value,
-      this.form.get('food').value?.id
+    const query: HorseQuery = this.mapper.formValuesToHorseData(this.form.value);
+    const cleanedQuery: HorseQuery = {};
+
+    for (const key in query) {
+      if (query[key]) {
+        cleanedQuery[key] = query[key];
+      }
+    }
+
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: cleanedQuery,
+      }
     );
 
-    this.service.getAll(query).subscribe({
+    console.log('Searching with params: ', cleanedQuery);
+
+    this.service.getAll(cleanedQuery).subscribe({
       next: data => {
         console.log('received horses', data);
         this.horses = data;
