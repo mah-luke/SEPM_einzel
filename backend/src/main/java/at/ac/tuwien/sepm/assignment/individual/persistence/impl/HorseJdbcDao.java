@@ -53,6 +53,8 @@ public class HorseJdbcDao implements HorseDao {
         if (qParams.dob() != null) queries.add(("dob <= ?"));
         if (qParams.sex() != null) queries.add( "UPPER(sex) = ?");
         if (qParams.foodId() != null) queries.add("foodId = ?");
+        if (qParams.fatherId() != null) queries.add("fatherId = ?");
+        if (qParams.motherId() != null) queries.add("motherId = ?");
 
         if (!queries.isEmpty())
             queryBuilder.append(" WHERE ").append(String.join(" AND ", queries));
@@ -74,6 +76,10 @@ public class HorseJdbcDao implements HorseDao {
                     ps.setString(++counter, qParams.sex().toString().toUpperCase());
                 if (qParams.foodId() != null)
                     ps.setLong(++counter, qParams.foodId());
+                if (qParams.fatherId() != null)
+                    ps.setLong(++counter, qParams.fatherId());
+                if (qParams.motherId() != null)
+                    ps.setLong(++counter, qParams.motherId());
                 if (qParams.limit() != null)
                     ps.setLong(++counter, qParams.limit());
 

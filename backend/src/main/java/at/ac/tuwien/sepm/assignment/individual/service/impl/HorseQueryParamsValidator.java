@@ -1,10 +1,11 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodDataDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDataDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.*;
-import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
+import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,14 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
 
     static int MAX_LENGTH = 255;
     private final ModelValidator<FoodDataDto> foodValidator;
+    private final ModelValidator<HorseDataDto> horseValidator;
+    private final HorseDao horseDao;
     private final FoodDao foodDao;
 
-    HorseQueryParamsValidator(ModelValidator<FoodDataDto> foodValidator, FoodDao foodDao){
+    HorseQueryParamsValidator(ModelValidator<FoodDataDto> foodValidator, ModelValidator<HorseDataDto> horseValidator, HorseDao horseDao, FoodDao foodDao){
         this.foodValidator = foodValidator;
+        this.horseValidator = horseValidator;
+        this.horseDao = horseDao;
         this.foodDao = foodDao;
     }
 
@@ -37,6 +42,30 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
                 foodDao.getFood(qParams.foodId());
             } catch (NotFoundException e) {
                 throw new StateConflictException("Provided Food with id '" + qParams.foodId() + "' does not exist!", e);
+            } catch (PersistenceException e) {
+                throw new ServiceException(e.getMessage(), e);
+            }
+        }
+
+        // fatherId
+        if (qParams.fatherId() != null) {
+            horseValidator.validate(qParams.fatherId());
+            try {
+                horseDao.getHorse(qParams.fatherId());
+            } catch (NotFoundException e) {
+                throw new StateConflictException("Provided Father with id '" + qParams.fatherId() + "' does not exist!", e);
+            } catch (PersistenceException e) {
+                throw new ServiceException(e.getMessage(), e);
+            }
+        }
+
+        // motherId
+        if (qParams.motherId() != null) {
+            horseValidator.validate(qParams.motherId());
+            try {
+                horseDao.getHorse(qParams.motherId());
+            } catch (NotFoundException e) {
+                throw new StateConflictException("Provided Mother with id '" + qParams.motherId() + "' does not exist!", e);
             } catch (PersistenceException e) {
                 throw new ServiceException(e.getMessage(), e);
             }
