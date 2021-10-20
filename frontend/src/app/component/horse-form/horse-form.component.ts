@@ -33,6 +33,7 @@ export class HorseFormComponent implements OnInit, ControlValueAccessor, OnDestr
   subscriptions: Subscription[] = [];
   sexes: Sex[] = Object.values(Sex);
   formGroup: FormGroup;
+  date = new Date().toISOString().slice(0, 10);
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({

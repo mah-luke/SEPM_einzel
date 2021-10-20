@@ -6,13 +6,13 @@
         <tr><td>{{value.name}}</td><td>{{value.description}}</td><td>{{value.dob}}</td></tr>
         </tbody>
       </table>
-      <input *ngIf="!value" type="text" (focus)="selecting=true" class="form-control"
+      <input *ngIf="!value" type="text" (focus)="enableSelecting()" class="form-control"
              formControlName="name" id="name" autocomplete="off">
       <button style="align-self: center" type="button" (click)="reset()" class="btn btn-close"></button>
     </div>
     <table class="table table-hover border" *ngIf="!value && selecting">
       <tbody>
-      <tr *ngFor="let horse of searchResult" (click)="select(horse); selecting=false">
+      <tr *ngFor="let horse of searchResult" (click)="select(horse)">
         <td>{{horse.name}}</td><td>{{horse.description}}</td><td>{{horse.dob}}</td>
       </tr>
       </tbody>

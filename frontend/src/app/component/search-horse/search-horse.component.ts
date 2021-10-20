@@ -37,12 +37,14 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
   emptySearchResult: Array<Horse>;
   selecting = false;
   private selected: Horse;
+  private loadedFor: Date; // needed for checking whether date for fetching has changed
 
 
   constructor(private formBuilder: FormBuilder, private service: HorseService) {
     this.form = this.formBuilder.group({
       name: [null],
       sex: [null],
+      dob: [null]
     });
 
     this.form.get('name').valueChanges.pipe(
@@ -88,6 +90,15 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
     });
   }
 
+  enableSelecting() {
+    this.selecting = true;
+    if (this.loadedFor !== this.form.get('dob').value){
+      console.log('Date has changed... fetching horses');
+      this.loadedFor = this.form.get('dob').value;
+      this.fetchHorses();
+    }
+  }
+
   reset() {
     this.form.get('name').reset();
     this.value=null;
@@ -97,10 +108,10 @@ export class SearchHorseComponent implements OnInit, ControlValueAccessor {
   select(horse: Horse) {
     console.log('selected: ', horse);
     this.value = horse;
+    this.selecting = false;
   }
 
   ngOnInit(): void {
-    this.fetchHorses();
   }
 
   onChange: any = () => {};

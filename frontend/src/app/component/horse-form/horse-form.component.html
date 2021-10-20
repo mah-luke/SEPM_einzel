@@ -15,7 +15,7 @@
 
   <div class="form-group">
     <label for="dob">Date of Birth</label>
-    <input type="date" class="form-control" id="dob" formControlName="dob" name="dob">
+    <input type="date" [max]="date" class="form-control" id="dob" formControlName="dob" name="dob">
     <div [hidden]="inputOk('dob')" class="alert alert-danger">Date of birth must be selected</div>
   </div>
 
@@ -35,11 +35,11 @@
 
   <div class="form-group">
     <label for="father">Father</label>
-    <app-search-horse id="father" formControlName="father" [query]="{sex: 'Male'}"></app-search-horse>
+    <app-search-horse id="father" formControlName="father" [query]="{sex: 'Male', dob: formGroup.get('dob').value}"></app-search-horse>
   </div>
 
   <div class="form-group">
     <label for="mother">Mother</label>
-    <app-search-horse id="mother" formControlName="mother" [query]="{sex: 'Female'}"></app-search-horse>
+    <app-search-horse id="mother" formControlName="mother" [query]="{sex: 'Female', dob: formGroup.get('dob').value}"></app-search-horse>
   </div>
 </div>
