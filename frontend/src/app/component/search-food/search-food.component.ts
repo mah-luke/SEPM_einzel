@@ -30,11 +30,11 @@ import {debounceTime, distinctUntilChanged} from 'rxjs';
   ]
 })
 export class SearchFoodComponent implements OnInit, ControlValueAccessor {
-  selected: Food;
   searchResult: Array<Food>;
   emptySearchResult: Array<Food>;
   form: FormGroup;
   selecting = false;
+  private selected: Food;
 
   get value(): Food {
     return this.selected;
@@ -54,7 +54,7 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
     this.form.get('name').valueChanges.pipe(
       debounceTime(400),
       distinctUntilChanged()
-    ).subscribe( res => {
+    ).subscribe( () => {
       if (this.form.get('name').value){
         this.fetchFood();
       }
@@ -91,7 +91,13 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
     }
 
   ngOnInit(): void {
-    this.fetchFood();
+  }
+
+  enableSelecting() {
+    this.selecting = true;
+    if (!this.searchResult) {
+      this.fetchFood();
+    }
   }
 
   fetchFood(): void {
@@ -116,6 +122,7 @@ export class SearchFoodComponent implements OnInit, ControlValueAccessor {
   select(food: Food) {
     console.log('selected: ', food);
     this.value = food;
+    this.selecting = false;
   }
 
   reset() {

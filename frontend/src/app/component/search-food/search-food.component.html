@@ -3,10 +3,10 @@
     <div class="selected">
       <table class="table border" *ngIf="value" (click)="select(null)">
         <tbody>
-          <tr><td>{{selected.name}}</td><td>{{selected.description}}</td><td>{{selected.calories}}</td></tr>
+          <tr><td>{{value.name}}</td><td>{{value.description}}</td><td>{{value.calories}}</td></tr>
         </tbody>
       </table>
-      <input *ngIf="!value" type="text" (focus)="selecting=true" class="form-control"
+      <input *ngIf="!value" type="text" (focus)="enableSelecting()" class="form-control"
              formControlName="name" id="name" autocomplete="off">
       <button style="align-self: center" type="button" (click)="reset()" class="btn btn-close"></button>
     </div>
