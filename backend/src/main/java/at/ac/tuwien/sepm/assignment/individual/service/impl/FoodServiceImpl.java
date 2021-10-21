@@ -27,10 +27,10 @@ public class FoodServiceImpl implements FoodService {
     }
 
     @Override
-    public List<Food> allFood(FoodQueryParamsDto qparams) throws ServiceException {
-        queryValidator.validate(qparams);
+    public List<Food> allFood(FoodQueryParamsDto qParams) throws ServiceException {
+        queryValidator.validate(qParams);
         try {
-            return dao.getAll(qparams);
+            return dao.getAll(qParams);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
