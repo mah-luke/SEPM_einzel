@@ -13,4 +13,18 @@ export class HorseQuery {
   ) {
   }
 
+  isEquivalent(other: HorseQuery): boolean {
+    if (other) {
+      for (const key in other) {
+        if (other[key] !== this[key]) {
+          return false;
+        }
+      }
+
+    } else {
+      return false;
+    }
+    return true;
+  }
+
 }

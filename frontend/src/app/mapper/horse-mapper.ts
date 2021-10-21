@@ -2,6 +2,7 @@ import {HorseData} from '../dto/horseData';
 import {Horse} from '../dto/horse';
 import {Injectable} from '@angular/core';
 import {HorseFormValues} from '../dto/horseFormValues';
+import {HorseQuery} from '../dto/horseQuery';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,22 @@ export class HorseMapper {
       horse.father,
       horse.mother
     );
+  }
+
+  public formValuesToHorseQuery(formValues: HorseFormValues): HorseQuery {
+    if (!formValues) {
+      return null;
+    }
+    return new HorseQuery(
+      formValues.name,
+      formValues.description,
+      formValues.dob,
+      formValues.sex,
+      formValues.food?.id,
+      formValues.father?.id,
+      formValues.mother?.id
+    );
+
   }
 
   public formValuesToHorseData(formValues: HorseFormValues): HorseData {
