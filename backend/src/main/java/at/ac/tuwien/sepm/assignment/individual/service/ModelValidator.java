@@ -8,7 +8,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentExceptio
  * Validates a Model (representing objects that get saved in the system).
  * e.g. a horse dto for creating and saving a horse entity.
  *
- * @param <Type>
+ * @param <Type> the type of the dto that gets validated
  */
 public interface ModelValidator<Type> extends Validator<Type> {
     /**
@@ -28,6 +28,8 @@ public interface ModelValidator<Type> extends Validator<Type> {
 
     /**
      * Validates the id for a Model of <Type>.
+     *
+     * @throws ValidationException if the semantics of 'id' is not valid.
      *
      * @param id the id to validate.
      */
