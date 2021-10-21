@@ -35,6 +35,10 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
 
         validate(dto);
 
+        if (dto.motherId() != null && id == dto.motherId() ||
+                dto.fatherId() != null && id == dto.fatherId())
+            throw new StateConflictException("A Horse must never have itself as parent!");
+
         try {
             // get horse
             Horse old = dao.getHorse(id);
@@ -63,7 +67,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                 if (!oldest.getDob().isAfter(dto.dob())) throw new StateConflictException(
                         "Children must always be younger than their parents!\n" +
                                 " This horse must have an Date of Birth before " + oldest.getDob().toString() +
-                                " (Date of Birth of youngest child)!"
+                                " (Date of Birth of oldest child)!"
                 );
             }
         } catch (PersistenceException e) {
