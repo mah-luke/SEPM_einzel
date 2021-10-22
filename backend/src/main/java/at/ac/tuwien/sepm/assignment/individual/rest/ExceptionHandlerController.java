@@ -16,6 +16,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(value = Exception.class)
     public void handleException(Exception e) throws Exception {
+        LOGGER.trace("handleException({})", e.getClass().getName());
         LOGGER.error(e.getMessage(), e); // log all exceptions
         throw e; // let Spring handle the response to the client in the default manner
     }
