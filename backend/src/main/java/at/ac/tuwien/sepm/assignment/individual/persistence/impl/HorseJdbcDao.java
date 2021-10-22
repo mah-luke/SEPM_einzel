@@ -45,6 +45,8 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public List<Horse> getAll(HorseQueryParamsDto qParams) {
+        LOGGER.debug("Querying database with params: {}", qParams);
+
         List<String> queries = new ArrayList<>();
         StringBuilder queryBuilder = new StringBuilder(SQL_SELECT_ALL);
 
@@ -92,6 +94,8 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse getHorse(long id) {
+        LOGGER.debug("Querying database with id: {}", id);
+
         try {
             List<Horse> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
@@ -109,6 +113,8 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse createHorse(HorseDataDto dto) {
+        LOGGER.debug("Updating database with dto: {}", dto);
+
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -133,6 +139,8 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse editHorse(long id, HorseDataDto dto) {
+        LOGGER.debug("Updating database with edited dto: {} for id: {}", dto, id);
+
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -158,6 +166,8 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse deleteHorse(long id) {
+        LOGGER.debug("Deleting Horse from database with id: {}", id);
+
         Horse horse = getHorse(id);
         try {
             jdbcTemplate.update( con -> {
@@ -172,6 +182,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     private Horse mapRow(ResultSet result, int rownum) throws SQLException {
+        LOGGER.trace("mapRow({}, {})", result, rownum);
+
         Horse horse = new Horse();
         horse.setId(result.getLong("id"));
         horse.setName(result.getString("name"));
