@@ -30,13 +30,14 @@ public class FoodJdbcDao implements FoodDao {
     private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
     private static final String SQL_CREATE = "INSERT INTO " + TABLE_NAME + " (NAME, DESCRIPTION, CALORIES) VALUES ( ?, ?, ?)";
-    private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
     public FoodJdbcDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
 
     @Override
     public List<Food> getAll(FoodQueryParamsDto qParams) {
+        LOGGER.debug("Querying database with params: {}", qParams);
+
         List<String> queries = new ArrayList<>();
         StringBuilder queryBuilder = new StringBuilder(SQL_SELECT_ALL);
 
@@ -72,6 +73,8 @@ public class FoodJdbcDao implements FoodDao {
 
     @Override
     public Food getFood(long id) {
+        LOGGER.debug("Querying database with id: {}", id);
+
         try {
             List<Food> result = jdbcTemplate.query( con -> {
                 PreparedStatement ps = con.prepareStatement(SQL_SELECT_BY_ID);
@@ -89,6 +92,8 @@ public class FoodJdbcDao implements FoodDao {
 
     @Override
     public Food createFood(FoodDataDto dto) {
+        LOGGER.debug("Updating database with dto: {}", dto);
+
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update( con -> {
@@ -108,6 +113,8 @@ public class FoodJdbcDao implements FoodDao {
     }
 
     private Food mapRow(ResultSet result, int rownum) throws SQLException {
+        LOGGER.trace("mapRow({}, {})", result, rownum);
+
         Food food = new Food();
         food.setId(result.getLong("id"));
         food.setName(result.getString("name"));
