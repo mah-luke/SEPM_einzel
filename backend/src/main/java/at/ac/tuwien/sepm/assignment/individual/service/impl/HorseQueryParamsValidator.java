@@ -8,7 +8,11 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.FoodDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto> {
@@ -18,6 +22,7 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
     private final ModelValidator<HorseDataDto> horseValidator;
     private final HorseDao horseDao;
     private final FoodDao foodDao;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     HorseQueryParamsValidator(ModelValidator<FoodDataDto> foodValidator, ModelValidator<HorseDataDto> horseValidator, HorseDao horseDao, FoodDao foodDao){
         this.foodValidator = foodValidator;
@@ -28,6 +33,7 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
 
     @Override
     public void validate(HorseQueryParamsDto qParams) throws ServiceException {
+        LOGGER.debug("Validating dto: {}", qParams);
 
         // name
         checkLength(qParams.name());
