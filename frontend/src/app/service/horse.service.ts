@@ -52,7 +52,6 @@ export class HorseService {
    * @return observable the edited horse
    */
   editHorse(id: string, horse: HorseData): Observable<Horse> {
-    console.log('get with id: ' + id);
     return this.http.put<Horse>(baseUri + '/' + id, horse);
   }
 
