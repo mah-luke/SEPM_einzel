@@ -25,16 +25,4 @@ public class FoodMapper {
                 food.getCalories()
         );
     }
-
-    public Food dtoToEntity(FoodDto foodDto) {
-        if (foodDto == null) return null;
-
-        Food food = new Food();
-        food.setId(foodDto.id());
-        food.setName(foodDto.name());
-        food.setDescription(foodDto.description());
-        food.setCalories(foodDto.calories());
-
-        return food;
-    }
 }
