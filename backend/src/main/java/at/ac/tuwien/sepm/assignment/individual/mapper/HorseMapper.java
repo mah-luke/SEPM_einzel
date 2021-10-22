@@ -3,18 +3,25 @@ package at.ac.tuwien.sepm.assignment.individual.mapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.ShallowHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class HorseMapper {
 
     private final FoodMapper foodMapper;
+    private final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public HorseMapper(FoodMapper foodMapper) {
         this.foodMapper = foodMapper;
     }
 
     public HorseDto entityToDto(Horse horse) {
+        LOGGER.debug("Mapping {} to HorseDto", horse);
+
         if (horse == null) return null;
 
         return new HorseDto(
@@ -30,6 +37,8 @@ public class HorseMapper {
     }
 
     public ShallowHorseDto entityToShallowDto(Horse horse) {
+        LOGGER.debug("Mapping {} to ShallowHorseDto", horse);
+
         if (horse == null) return null;
 
         return new ShallowHorseDto(
