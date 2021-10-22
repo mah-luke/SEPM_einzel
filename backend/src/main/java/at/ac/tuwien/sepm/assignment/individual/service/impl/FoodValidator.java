@@ -18,7 +18,7 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
-    public void validate(FoodDataDto dto) throws ValidationException {
+    public void validate(FoodDataDto dto) {
         LOGGER.debug("Validating dto: {}", dto);
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Food must be set!");
