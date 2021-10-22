@@ -12,7 +12,8 @@ import java.lang.invoke.MethodHandles;
 @Component
 public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
 
-    static int MAX_LENGTH = 255;
+    private static final int MAX_LENGTH = 255;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
     public void validate(FoodQueryParamsDto qParams) {

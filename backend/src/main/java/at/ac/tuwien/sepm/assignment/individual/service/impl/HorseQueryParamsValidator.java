@@ -17,7 +17,7 @@ import java.lang.invoke.MethodHandles;
 @Component
 public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto> {
 
-    static int MAX_LENGTH = 255;
+    private static final int MAX_LENGTH = 255;
     private final ModelValidator<FoodDataDto> foodValidator;
     private final ModelValidator<HorseDataDto> horseValidator;
     private final HorseDao horseDao;
