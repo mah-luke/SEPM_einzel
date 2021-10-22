@@ -15,6 +15,11 @@ export class FoodService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Get all horses stored in the system by search parameter params
+   *
+   * @param params the object containing the search parameters
+   */
   getAll(params: FoodQuery): Observable<Food[]> {
     let httpParams = new HttpParams();
     for (const key in params){
@@ -26,10 +31,20 @@ export class FoodService {
     return this.http.get<Food[]>(baseUri, {params: httpParams});
   }
 
+  /**
+   * Get a food stored in the system by its id
+   *
+   * @param id the id of the stored food
+   */
   getFood(id: string) {
     return this.http.get<Food>(baseUri + '/' + id);
   }
 
+  /**
+   * Creates a food and stores it in the system
+   *
+   * @param food the food to create
+   */
   createFood(food: FoodData): Observable<Food> {
     return this.http.post<Food>(baseUri, food);
   }
