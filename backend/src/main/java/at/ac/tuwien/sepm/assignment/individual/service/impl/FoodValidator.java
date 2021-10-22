@@ -5,15 +5,21 @@ import at.ac.tuwien.sepm.assignment.individual.exception.IllegalArgumentExceptio
 import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.ModelValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class FoodValidator  implements ModelValidator<FoodDataDto> {
 
-    static int MAX_LENGTH = 255;
+    private static final int MAX_LENGTH = 255;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
     public void validate(FoodDataDto dto) throws ValidationException {
+        LOGGER.debug("Validating dto: {}", dto);
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Food must be set!");
         else if (dto.name().isBlank()) throw new ValidationException("Name must not be blank!");
@@ -28,13 +34,15 @@ public class FoodValidator  implements ModelValidator<FoodDataDto> {
     }
 
     @Override
-    public void validate(FoodDataDto dto, long id) throws ServiceException {
+    public void validate(FoodDataDto dto, long id) {
+        LOGGER.debug("Validating dto: {}, id: {}", dto, id);
         validate(id);
         validate(dto);
     }
 
     @Override
     public void validate(long id) {
+        LOGGER.debug("Validating, id: {}", id);
         if (id == 0) throw new ValidationException("Id must never be 0!");
     }
 
