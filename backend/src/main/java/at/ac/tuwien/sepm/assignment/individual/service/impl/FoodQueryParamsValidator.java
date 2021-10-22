@@ -3,7 +3,11 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 import at.ac.tuwien.sepm.assignment.individual.dto.FoodQueryParamsDto;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.lang.invoke.MethodHandles;
 
 @Component
 public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
@@ -12,6 +16,7 @@ public class FoodQueryParamsValidator implements Validator<FoodQueryParamsDto> {
 
     @Override
     public void validate(FoodQueryParamsDto qParams) {
+        LOGGER.debug("Validating dto: {}", qParams);
 
         // name
         if (qParams.name() != null) checkLength(qParams.name());
