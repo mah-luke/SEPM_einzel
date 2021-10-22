@@ -18,8 +18,9 @@ export class HorseService {
   ) { }
 
   /**
-   * Get all horses stored in the system
+   * Get all horses stored in the system by search parameter param
    *
+   * @param params object that contains the search parameters
    * @return observable list of found horses.
    */
   getAll(params: HorseQuery): Observable<Horse[]> {
@@ -48,6 +49,7 @@ export class HorseService {
    *
    * @param id the id of the horse to edit.
    * @param horse the updated values for the horse.
+   * @return observable the edited horse
    */
   editHorse(id: string, horse: HorseData): Observable<Horse> {
     console.log('get with id: ' + id);
@@ -58,6 +60,7 @@ export class HorseService {
    * Get a horse stored in the system.
    *
    * @param id the id of the stored horse.
+   * @return horse the horse with 'id'
    */
   getHorse(id: string) {
     return this.http.get<Horse>(baseUri + '/' + id);
@@ -67,6 +70,7 @@ export class HorseService {
    * Delete a horse from the system.
    *
    * @param id the id of the horse to delete.
+   * @return horse the deleted horse
    */
   deleteHorse(id: string) {
     return this.http.delete<Horse>(baseUri + '/' + id);
