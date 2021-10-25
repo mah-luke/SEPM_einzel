@@ -73,11 +73,11 @@ public class HorseEndpoint {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public HorseDto deleteHorse(@PathVariable long id) throws RestException {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteHorse(@PathVariable long id) throws RestException {
         LOGGER.info("DELETE {}/{}:", BASE_PATH, id);
         try {
-            return mapper.entityToDto(service.deleteHorse(id));
+            service.deleteHorse(id);
         } catch (ServiceException e) {
             throw new RestException(e.getMessage(), e);
         }
