@@ -190,15 +190,9 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(result.getString("description"));
         horse.setDob(result.getObject("dob", LocalDate.class));
         horse.setSex(Sex.valueOf(result.getString("sex")));
-
-        Long foodId = (Long) result.getObject("foodId");
-        horse.setFood(foodId == null? null : foodJdbcDao.getFood(foodId));
-
-        Long fatherId = result.getObject("fatherId", Long.class);
-        horse.setFather(fatherId == null? null : getHorse(fatherId));
-
-        Long motherId = result.getObject("motherId", Long.class);
-        horse.setMother(motherId == null? null : getHorse(motherId));
+        horse.setFoodId(result.getObject("foodId", Long.class));
+        horse.setFatherId(result.getObject("fatherId", Long.class));
+        horse.setMotherId(result.getObject("motherId", Long.class));
 
         return horse;
     }

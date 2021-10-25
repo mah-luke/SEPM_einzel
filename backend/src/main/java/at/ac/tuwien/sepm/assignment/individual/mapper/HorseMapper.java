@@ -3,6 +3,9 @@ package at.ac.tuwien.sepm.assignment.individual.mapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.ShallowHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
+import at.ac.tuwien.sepm.assignment.individual.service.FoodService;
+import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,9 +17,13 @@ public class HorseMapper {
 
     private final FoodMapper foodMapper;
     private final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final HorseService service;
+    private final FoodService foodService;
 
-    public HorseMapper(FoodMapper foodMapper) {
+    public HorseMapper(FoodMapper foodMapper, HorseService service, FoodService foodService) {
         this.foodMapper = foodMapper;
+        this.service = service;
+        this.foodService = foodService;
     }
 
     public HorseDto entityToDto(Horse horse) throws ServiceException {
@@ -30,9 +37,9 @@ public class HorseMapper {
                 horse.getDescription(),
                 horse.getDob(),
                 horse.getSex(),
-                foodMapper.entityToDto(horse.getFood()),
-                entityToShallowDto(horse.getFather()),
-                entityToShallowDto(horse.getMother())
+                foodMapper.entityToDto(horse.getFoodId() != null? foodService.getFood(horse.getFoodId()) : null),
+                entityToShallowDto(horse.getFatherId() != null ? service.getHorse(horse.getFatherId()) : null),
+                entityToShallowDto(horse.getMotherId() != null ? service.getHorse(horse.getMotherId()) : null)
         );
     }
 

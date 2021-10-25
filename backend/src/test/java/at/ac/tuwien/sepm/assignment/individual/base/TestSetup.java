@@ -47,9 +47,9 @@ public class TestSetup {
                 && entity.getSex().equals(dto.sex())
                 && entity.getDob().equals(dto.dob())
                 && entity.getDescription() == null ? dto.description() == null : entity.getDescription().equals(dto.description())
-                && entity.getFood() == null ? dto.foodId() == null : entity.getFood().getId() == dto.foodId()
-                && entity.getFather() == null ? dto.fatherId() == null : entity.getFather().getId() == dto.fatherId()
-                && entity.getMother() == null ? dto.motherId() == null : entity.getMother().getId() == dto.motherId();
+                && entity.getFoodId() == null ? dto.foodId() == null : entity.getFoodId().equals(dto.foodId())
+                && entity.getFatherId() == null ? dto.fatherId() == null : entity.getFatherId().equals(dto.fatherId())
+                && entity.getMotherId() == null ? dto.motherId() == null : entity.getMotherId().equals(dto.motherId());
     }
 
     public boolean dtoDerivedFromDataDto(HorseDto dto, HorseDataDto dataDto){

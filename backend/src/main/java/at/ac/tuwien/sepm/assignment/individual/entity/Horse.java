@@ -11,9 +11,9 @@ public class Horse {
     private String description;
     private LocalDate dob;
     private Sex sex;
-    private Food food;
-    private Horse father;
-    private Horse mother;
+    private Long foodId;
+    private Long fatherId;
+    private Long motherId;
 
     public long getId() {
         return id;
@@ -55,28 +55,28 @@ public class Horse {
         this.sex = sex;
     }
 
-    public Food getFood() {
-        return food;
+    public Long getFoodId() {
+        return foodId;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void setFoodId(Long foodId) {
+        this.foodId = foodId;
     }
 
-    public Horse getFather() {
-        return father;
+    public Long getFatherId() {
+        return fatherId;
     }
 
-    public void setFather(Horse father) {
-        this.father = father;
+    public void setFatherId(Long fatherId) {
+        this.fatherId = fatherId;
     }
 
-    public Horse getMother() {
-        return mother;
+    public Long getMotherId() {
+        return motherId;
     }
 
-    public void setMother(Horse mother) {
-        this.mother = mother;
+    public void setMotherId(Long motherId) {
+        this.motherId = motherId;
     }
 
     @Override
@@ -84,11 +84,11 @@ public class Horse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Horse horse = (Horse) o;
-        return id == horse.id && name.equals(horse.name) && Objects.equals(description, horse.description) && dob.equals(horse.dob) && sex == horse.sex && Objects.equals(food, horse.food) && Objects.equals(father, horse.father) && Objects.equals(mother, horse.mother);
+        return id == horse.id && name.equals(horse.name) && Objects.equals(description, horse.description) && dob.equals(horse.dob) && sex == horse.sex && Objects.equals(foodId, horse.foodId) && Objects.equals(fatherId, horse.fatherId) && Objects.equals(motherId, horse.motherId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, dob, sex, food, father, mother);
+        return Objects.hash(id, name, description, dob, sex, foodId, fatherId, motherId);
     }
 }
