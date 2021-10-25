@@ -54,7 +54,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
                     new HorseQueryParamsDto(
                             null,
                             null,
-                            dto.dob().minusDays(1),
+                            null,
                             null,
                             null,
                             old.getSex() == Sex.Male ? id : null,
