@@ -24,7 +24,7 @@ public interface ModelValidator<Type> extends Validator<Type> {
      * @param obj the object to validate. References change to the object persisted with id 'id'.
      * @param id the id to validate.
      */
-    void validate(Type obj, long id) throws ServiceException;
+    void validate(Type obj, long id);
 
     /**
      * Validates the id for a Model of <Type>.

@@ -32,7 +32,7 @@ public class HorseQueryParamsValidator implements Validator<HorseQueryParamsDto>
     }
 
     @Override
-    public void validate(HorseQueryParamsDto qParams) throws ServiceException {
+    public void validate(HorseQueryParamsDto qParams)  {
         LOGGER.debug("Validating dto: {}", qParams);
 
         // name

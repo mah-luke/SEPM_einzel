@@ -34,7 +34,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
     }
 
     @Override
-    public void validate(HorseDataDto dto, long id) throws ServiceException {
+    public void validate(HorseDataDto dto, long id)  {
         LOGGER.debug("Validating dto: {}, id: {}", dto, id);
 
         validate(id);
@@ -95,7 +95,7 @@ public class HorseValidator implements ModelValidator<HorseDataDto> {
     }
 
     @Override
-    public void validate(HorseDataDto dto) throws ServiceException {
+    public void validate(HorseDataDto dto)  {
         LOGGER.debug("Validating dto: {}", dto);
         // name
         if (dto.name() == null) throw new IllegalArgumentException("Name for Horses must be set!");

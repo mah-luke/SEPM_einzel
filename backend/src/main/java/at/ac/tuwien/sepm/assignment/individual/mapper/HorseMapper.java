@@ -19,7 +19,7 @@ public class HorseMapper {
         this.foodMapper = foodMapper;
     }
 
-    public HorseDto entityToDto(Horse horse) {
+    public HorseDto entityToDto(Horse horse) throws ServiceException {
         LOGGER.debug("Mapping {} to HorseDto", horse);
 
         if (horse == null) return null;

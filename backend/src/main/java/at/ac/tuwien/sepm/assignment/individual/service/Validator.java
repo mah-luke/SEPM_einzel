@@ -22,7 +22,7 @@ public interface Validator<Type> {
      *
      * @param obj the object to validate.
      */
-    void validate(Type obj) throws ServiceException;
+    void validate(Type obj);
 
 
 }
