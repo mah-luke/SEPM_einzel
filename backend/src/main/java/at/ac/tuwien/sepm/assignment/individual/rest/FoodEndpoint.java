@@ -28,7 +28,6 @@ public class FoodEndpoint {
         this.mapper = mapper;
     }
 
-    // ASK: correct way of query params mapping???
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Stream<FoodDto> allFood(FoodQueryParamsDto qparams) throws RestException {

@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.assignment.individual.enums.Sex;
 import java.time.LocalDate;
 import java.util.Objects;
 
-// ASK: entity params ok?
 public class Horse {
     private long id;
     private String name;
