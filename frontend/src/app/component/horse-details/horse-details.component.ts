@@ -40,10 +40,10 @@ export class HorseDetailsComponent implements OnInit {
 
   public deleteHorse() {
     this.service.deleteHorse(this.id).subscribe( {
-      next: data => {
-        console.log('horse deleted', data);
+      next: () => {
+        this.deletedHorse = this.model;
+        console.log('horse deleted', this.deletedHorse);
         this.model = null;
-        this.deletedHorse = data;
       },
       error: error => {
         console.error('Cannot delete horse: ', error);

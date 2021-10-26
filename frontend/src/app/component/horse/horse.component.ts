@@ -109,11 +109,10 @@ export class HorseComponent implements OnInit {
 
   public deleteHorse(id: number) {
     this.service.deleteHorse(String(id)).subscribe( {
-      next: data => {
-        console.log('horse deleted', data);
-        console.log(this.horses.filter(val => val.id !== id));
+      next: () => {
+        this.deletedHorse = this.horses.filter(val => val.id === id)[0];
+        console.log('horse deleted', this.deletedHorse);
         this.horses = this.horses.filter(val => val.id !== id);
-        this.deletedHorse = data;
       },
       error: error => {
         console.error('Cannot delete horse: ', error);
