@@ -28,7 +28,6 @@ import java.util.List;
 public class HorseJdbcDao implements HorseDao {
     private final JdbcTemplate jdbcTemplate;
     private final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private final FoodJdbcDao foodJdbcDao;
 
     private static final String TABLE_NAME = "horse";
     private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
@@ -38,9 +37,8 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
 
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate, FoodJdbcDao foodJdbcDao) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.foodJdbcDao = foodJdbcDao;
     }
 
     @Override
