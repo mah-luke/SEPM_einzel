@@ -15,6 +15,7 @@ import {HorseFormValues} from '../../dto/horseFormValues';
 export class CreateHorseComponent implements OnInit {
   createdHorse: Horse;
   submitted = false;
+  loading = false;
   error: HttpErrorResponse;
   form = new FormControl(null);
 
@@ -25,6 +26,7 @@ export class CreateHorseComponent implements OnInit {
     const formValues: HorseFormValues = this.form.value;
     console.log('submitted horse creation form', formValues);
     this.submitted = true;
+    this.loading = true;
     this.createHorse(this.mapper.formValuesToHorseData(formValues));
   }
 
@@ -33,10 +35,12 @@ export class CreateHorseComponent implements OnInit {
       next: data => {
         console.log('horse created', data);
         this.createdHorse = data;
+        this.loading = false;
       },
       error: error => {
         console.error('Cannot create horse: ', error);
         this.error = error;
+        this.loading = false;
       }
     });
   }
@@ -49,6 +53,7 @@ export class CreateHorseComponent implements OnInit {
     this.vanishError();
     this.form.reset();
     this.submitted = false;
+    this.loading = false;
     this.createdHorse = null;
   }
 

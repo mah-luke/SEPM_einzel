@@ -10,12 +10,16 @@
 </div>
 
 <div *ngIf="submitted">
-  <div *ngIf="!createdHorse">
-    <h2 *ngIf="error">Horse failed to create:</h2>
+  <div *ngIf="loading">
+    <h1>Creating horse ...</h1>
   </div>
 
-  <div *ngIf="createdHorse">
-    <h2>Created Horse:</h2>
+  <div *ngIf="!createdHorse && !loading">
+    <h1 *ngIf="error">Could not create horse!</h1>
+  </div>
+
+  <div *ngIf="createdHorse && !loading">
+    <h1>Created Horse:</h1>
     <app-show-horse [model]="createdHorse"></app-show-horse>
   </div>
   <button type="reset" class="btn btn-primary" (click)="newHorse()">Create another</button>
