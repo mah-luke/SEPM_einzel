@@ -1,19 +1,10 @@
 <div class="container mt-3">
   <div *ngIf="error.error.message !== undefined" class="alert alert-danger" role="alert">
     <h4>Error: {{error.error.message}}</h4>
-    <div class="row" *ngFor="let row of error.error | keyvalue">
-      <div class="col-3" >{{row.key}}</div>
-      <div class="col-9">{{row.value}}</div>
-    </div>
-
     <button type="button" (click)="vanishError()" class="btn btn-close" data-dismiss="alert" aria-label="Close"></button>
   </div>
   <div *ngIf="error.error.message === undefined" class="alert alert-danger" role="alert">
-    <h4>Error: Backend not reachable</h4>
-    <div class="row">
-      <div class="col-3" >message</div>
-      <div class="col-9">{{error.message}}</div>
-    </div>
+    <h4>Error: Backend not responding</h4>
     <button type="button" (click)="vanishError()" class="btn btn-close" data-dismiss="alert" aria-label="Close"></button>
   </div>
 </div>
