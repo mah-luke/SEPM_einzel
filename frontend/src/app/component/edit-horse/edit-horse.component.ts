@@ -19,6 +19,7 @@ export class EditHorseComponent implements OnInit {
   submitted = false;
   error: HttpErrorResponse;
   form = new FormControl();
+  loading = false;
 
   constructor(private service: HorseService, private route: ActivatedRoute, private mapper: HorseMapper) {
   }
@@ -34,6 +35,7 @@ export class EditHorseComponent implements OnInit {
     const formValue: HorseFormValues = this.form.value;
     console.log('submitted horse editing form', formValue);
     this.submitted = true;
+    this.loading = true;
     this.editHorse(
       this.mapper.formValuesToHorseData(formValue)
     );
@@ -44,11 +46,14 @@ export class EditHorseComponent implements OnInit {
       next: data => {
         console.log('horse edited', data);
         this.editedHorse = data;
+        this.loading = false;
       },
       error: error => {
         console.error('Cannot edit horse: ', error);
         this.error = error;
+        this.loading = false;
       }
+
     });
   }
 
@@ -69,6 +74,7 @@ export class EditHorseComponent implements OnInit {
     this.vanishError();
     this.loadHorse();
     this.submitted = false;
+    this.loading = false;
     this.editedHorse = null;
   }
 

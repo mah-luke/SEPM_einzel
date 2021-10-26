@@ -8,13 +8,17 @@
 </form>
 
 <div *ngIf="submitted">
-  <div *ngIf="!editedHorse">
+  <div *ngIf="loading">
+    <h1>Editing horse ...</h1>
+  </div>
+
+  <div *ngIf="!editedHorse && !loading">
     <h1>Could not edit horse!</h1>
     <button class="btn btn-outline-dark" routerLink="/horses/{{id}}/details">Back to details</button>
     <button class="btn btn-info" (click)="reEditHorse()">Back to edit</button>
   </div>
 
-  <div *ngIf="editedHorse">
+  <div *ngIf="editedHorse && !loading">
     <h1>Successfully edited following horse:</h1>
     <app-show-horse [model]="editedHorse"></app-show-horse>
     <button class="btn btn-outline-dark" routerLink="/horses/{{id}}/details">Back to details</button>
